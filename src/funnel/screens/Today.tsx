@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { BookOpen, Headphones, MessageCircle, Calendar, RefreshCw, User, Star } from "lucide-react";
 import { PhoneFrame } from "@/funnel/components/PhoneFrame";
-import { DeviceFrame } from "@/funnel/components/Chrome";
+import { BrowserChrome } from "@/funnel/components/BrowserChrome";
 import { cn } from "@/lib/cn";
 
 const STEPS = [
@@ -14,7 +14,7 @@ const STEPS = [
 export function Today({ onNext }: { onNext: () => void }) {
   return (
     <PhoneFrame>
-      <DeviceFrame>
+      <BrowserChrome>
         <div className="min-h-0 flex-1 overflow-y-auto">
           <div className="px-5 pt-2">
             <img src="/img/today-avatar.png" alt="" className="size-9 rounded-full object-cover" />
@@ -47,7 +47,7 @@ export function Today({ onNext }: { onNext: () => void }) {
           <button type="button" onClick={onNext} className="h-[56px] w-full rounded-[16px] bg-primary font-ui text-[16px] font-bold text-white shadow-[0_8px_12px_rgba(0,0,0,0.1)] active:scale-[0.99]">Start</button>
         </div>
         <TabBar />
-      </DeviceFrame>
+      </BrowserChrome>
     </PhoneFrame>
   );
 }

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { PhoneFrame } from "@/funnel/components/PhoneFrame";
-import { DeviceFrame } from "@/funnel/components/Chrome";
+import { BrowserChrome } from "@/funnel/components/BrowserChrome";
 import { Header } from "@/funnel/components/Header";
 import { TypingDots } from "@/funnel/components/ChatBubble";
 import { Transcript } from "@/funnel/components/Transcript";
@@ -35,7 +35,7 @@ export function FunnelPage({ initial, instant }: { initial?: Answers; instant?: 
 
   return (
     <PhoneFrame>
-      <DeviceFrame>
+      <BrowserChrome>
         <Header title={f.title} progress={f.progress} onBack={f.back} canBack={f.canBack} />
         {active?.t === "summary" ? (
           <SummaryScreen kind={active.kind} cta={active.cta} answers={f.answers} onNext={() => f.answer(active.id, "done")} />
@@ -48,7 +48,7 @@ export function FunnelPage({ initial, instant }: { initial?: Answers; instant?: 
             {active?.t === "ask" && <QuestionSheet key={active.id} q={active.q} onAnswer={(v) => f.answer(active.id, v)} />}
           </>
         )}
-      </DeviceFrame>
+      </BrowserChrome>
     </PhoneFrame>
   );
 }
