@@ -4,7 +4,7 @@ import { cn } from "@/lib/cn";
 
 function Emblem() {
   return (
-    <span className="relative inline-grid size-[30px] shrink-0 place-items-center rounded-full bg-[linear-gradient(145deg,#7d6cff_5%,#5a45e8_95%)] align-[-0.32em] shadow-[0_5px_16px_rgba(110,80,250,0.55),0_2px_6px_rgba(110,80,250,0.4)]">
+    <span className="relative grid size-[30px] shrink-0 place-items-center rounded-full bg-[linear-gradient(145deg,#7d6cff_5%,#5a45e8_95%)] shadow-[0_5px_16px_rgba(110,80,250,0.55),0_2px_6px_rgba(110,80,250,0.4)]">
       <svg viewBox="0 0 24 24" fill="#fff" className="size-[16px]">
         <circle cx="12" cy="8" r="3.7" />
         <path d="M5.4 18.7c.9-3.1 3.5-4.9 6.6-4.9s5.7 1.8 6.6 4.9c.2.75-.35 1.5-1.1 1.5H6.5c-.75 0-1.3-.75-1.1-1.5z" />

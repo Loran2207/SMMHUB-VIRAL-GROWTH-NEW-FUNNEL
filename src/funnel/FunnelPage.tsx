@@ -36,11 +36,11 @@ export function FunnelPage({ initial, instant }: { initial?: Answers; instant?: 
   return (
     <PhoneFrame>
       <BrowserChrome>
-        <Header title={f.title} progress={f.progress} onBack={f.back} canBack={f.canBack} />
         {active?.t === "summary" ? (
-          <SummaryScreen kind={active.kind} cta={active.cta} answers={f.answers} onNext={() => f.answer(active.id, "done")} />
+          <SummaryScreen kind={active.kind} cta={active.cta} answers={f.answers} onNext={() => f.answer(active.id, "done")} onBack={f.back} />
         ) : (
           <>
+            <Header title={f.title} progress={f.progress} onBack={f.back} canBack={f.canBack} />
             <div ref={scroll} className="flex flex-1 flex-col justify-end gap-2 overflow-y-auto px-4 pb-3 pt-3">
               <Transcript beats={f.resolved} answers={f.answers} />
               {f.revealing && f.typing && <TypingDots />}
