@@ -42,8 +42,8 @@ export function SummaryShell({ title, subtitle, children, note, cta, onNext, onB
   title: string; subtitle: ReactNode; children: ReactNode; note: string; cta: string; onNext: () => void; onBack?: () => void;
 }) {
   return (
-    <div className="flex min-h-0 flex-1 flex-col bg-gradient-to-b from-white to-[#fefeff]">
-      <div className="min-h-0 flex-1 overflow-y-auto">
+    <div className="min-h-0 flex-1 overflow-y-auto bg-gradient-to-b from-white to-[#fefeff]">
+      <div className="flex min-h-full flex-col pb-2">
         <div className="flex flex-col items-center gap-3 px-[52px] pt-6">
           <h2 className="text-center font-ui text-[31px] font-extrabold italic leading-[1.1]">
             <span className="inline-flex items-center gap-1.5 text-accent">Your <Emblem /></span>
@@ -55,10 +55,10 @@ export function SummaryShell({ title, subtitle, children, note, cta, onNext, onB
         <div className="px-4 pt-6">
           <div className="rounded-[12px] border border-[#a4f3cb] bg-[#eafdf0] px-4 py-2.5"><p className="font-ui text-[13px] font-semibold leading-[1.4] text-[#34453a]">{note}</p></div>
         </div>
-      </div>
-      <div className="flex shrink-0 gap-3 border-t border-line-soft bg-white p-4">
-        <button type="button" onClick={onBack} className="flex h-[56px] items-center gap-1 rounded-[16px] border border-[#dedfe4] bg-white pl-3 pr-4 font-ui text-[16px] font-bold text-ink active:scale-[0.99]"><ChevronLeft size={20} /> Prev</button>
-        <button type="button" onClick={onNext} className="h-[56px] flex-1 rounded-[16px] bg-[#2d3251] font-ui text-[16px] font-bold text-white active:scale-[0.99]">{cta}</button>
+        <div className="mt-auto flex gap-3 px-4 pb-5 pt-7">
+          <button type="button" onClick={onBack} className="flex h-[56px] items-center gap-1 rounded-[16px] border border-[#dedfe4] bg-white pl-3 pr-4 font-ui text-[16px] font-bold text-ink active:scale-[0.99]"><ChevronLeft size={20} /> Prev</button>
+          <button type="button" onClick={onNext} className="h-[56px] flex-1 rounded-[16px] bg-[#2d3251] font-ui text-[16px] font-bold text-white active:scale-[0.99]">{cta}</button>
+        </div>
       </div>
     </div>
   );
