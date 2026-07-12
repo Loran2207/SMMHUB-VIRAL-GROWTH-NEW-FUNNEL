@@ -37,7 +37,7 @@ export function Header({ title, progress, onBack, canBack = true }: {
 function Avatar() {
   return (
     <div className="relative size-8 shrink-0">
-      <div className="size-8 overflow-hidden rounded-full bg-gradient-to-br from-[#cbb8ff] to-[#efe6ff]" />
+      <img src="/img/avatar.png" alt="" className="size-8 rounded-full object-cover" />
       <span className="absolute bottom-0 right-0 size-[8px] rounded-full border-2 border-stage bg-good" />
     </div>
   );

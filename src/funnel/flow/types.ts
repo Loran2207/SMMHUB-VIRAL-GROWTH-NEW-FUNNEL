@@ -1,4 +1,5 @@
 export type StepKey = "niche" | "audience" | "goals" | "plan";
+export type ScreenKind = "hero" | "welcome1" | "welcome2" | "today" | "loggedin";
 
 export const STEP_TITLE: Record<StepKey, string> = {
   niche: "Step 1. Niche",
@@ -31,4 +32,5 @@ export type Answers = Record<string, string>;
 export type Beat =
   | { t: "bot"; step?: StepKey; text: string; card?: Card; italic?: boolean; when?: (a: Answers) => boolean }
   | { t: "ask"; step?: StepKey; id: string; q: Question; when?: (a: Answers) => boolean }
-  | { t: "summary"; step?: StepKey; id: string; kind: "dna" | "audience" | "goals"; cta: string; when?: (a: Answers) => boolean };
+  | { t: "summary"; step?: StepKey; id: string; kind: "dna" | "audience" | "goals"; cta: string; when?: (a: Answers) => boolean }
+  | { t: "screen"; step?: StepKey; id: string; screen: ScreenKind; when?: (a: Answers) => boolean };

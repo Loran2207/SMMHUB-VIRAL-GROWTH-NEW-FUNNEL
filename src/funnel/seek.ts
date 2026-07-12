@@ -28,6 +28,7 @@ export function seek(flow: Beat[], target: string | null, seed: Answers): Answer
     for (const b of path) {
       if (b.t === "ask" && !(b.id in answers)) { id = b.id; q = b.q; break; }
       if (b.t === "summary" && !(b.id in answers)) { id = b.id; summary = true; break; }
+      if (b.t === "screen" && !(b.id in answers)) { id = b.id; summary = true; break; }
     }
     if (!id || id === target) break;
     answers[id] = summary ? "done" : def(q!);

@@ -3,7 +3,7 @@ import type { Answers, Beat, StepKey } from "@/funnel/flow/types";
 import { STEP_TITLE } from "@/funnel/flow/types";
 
 const passes = (b: Beat, a: Answers) => !b.when || b.when(a);
-const idOf = (b: Beat) => (b.t === "ask" || b.t === "summary" ? b.id : undefined);
+const idOf = (b: Beat) => (b.t === "ask" || b.t === "summary" || b.t === "screen" ? b.id : undefined);
 
 export function useFunnel(flow: Beat[], opts?: { initial?: Answers; instant?: boolean }) {
   const [answers, setAnswers] = useState<Answers>(opts?.initial ?? {});
@@ -54,8 +54,9 @@ export function useFunnel(flow: Beat[], opts?: { initial?: Answers; instant?: bo
     return s;
   }, [path, activeIdx]);
 
-  const totalAsks = useMemo(() => flow.filter((b) => b.t !== "bot").length, [flow]);
-  const progress = totalAsks ? (Object.keys(answers).length / totalAsks) * 100 : 0;
+  const chatBeats = useMemo(() => flow.filter((b) => b.t === "ask" || b.t === "summary"), [flow]);
+  const doneChat = chatBeats.filter((b) => (b as { id: string }).id in answers).length;
+  const progress = chatBeats.length ? (doneChat / chatBeats.length) * 100 : 0;
 
   return {
     answers,
