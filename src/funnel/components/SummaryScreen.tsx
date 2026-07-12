@@ -21,7 +21,7 @@ function DnaSummary({ answers, cta, onNext, onBack }: P) {
   return (
     <SummaryShell title="Creator DNA" cta={cta} onNext={onNext} onBack={onBack} note={NOTE}
       subtitle={<>This will help us customize your <b className="font-semibold text-ink">content strategy</b> specifically for you.</>}>
-      <TopCard cols={[{ icon: <User size={22} />, label: "You are", value: answers.describe ?? "-" }, { icon: <Instagram size={22} />, label: "Niche", value: niche }]} />
+      <TopCard cols={[{ icon: <User size={22} />, label: "You are", value: answers.describe ?? "-" }, { icon: <Instagram size={20} />, label: "Platforms", value: "Instagram" }]} />
       <InfoRow icon={<Search size={16} />} label="Your niche" value={niche} />
       <InfoRow icon={<Star size={16} />} label="Unique feature" value={answers.skills ?? "You turn complex ideas into simple, relatable content"} />
       <InfoRow icon={<Heart size={16} />} label="Topics & Trends" value={answers.topics ?? "Practical tips and fresh takes in your niche"} />
