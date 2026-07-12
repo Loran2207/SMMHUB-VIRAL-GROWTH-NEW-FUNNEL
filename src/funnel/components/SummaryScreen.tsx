@@ -1,10 +1,12 @@
 import { Sheet, PrimaryButton } from "@/funnel/components/ui";
 import { AudienceSummary } from "@/funnel/components/AudienceSummary";
+import { GoalsSummary } from "@/funnel/components/GoalsSummary";
 import type { Answers } from "@/funnel/flow/types";
 
 export function SummaryScreen({ kind, cta, answers, onNext }: {
   kind: "dna" | "audience" | "goals"; cta: string; answers: Answers; onNext: () => void;
 }) {
+  if (kind === "goals") return <GoalsSummary answers={answers} cta={cta} onNext={onNext} />;
   if (kind === "audience") return <AudienceSummary answers={answers} cta={cta} onNext={onNext} />;
   const niche = answers["niche-list"] ?? answers["niche-gen"] ?? "-";
   if (kind !== "dna") {
