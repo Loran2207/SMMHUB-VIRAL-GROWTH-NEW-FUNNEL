@@ -1,0 +1,44 @@
+import { ChevronLeft } from "lucide-react";
+import { cn } from "@/lib/cn";
+
+export function Header({ title, progress, onBack, canBack = true }: {
+  title: string;
+  progress: number;
+  onBack?: () => void;
+  canBack?: boolean;
+}) {
+  return (
+    <div className="sticky top-0 z-20 w-full backdrop-blur-[10px]" style={{ background: "rgba(250,250,251,0.72)" }}>
+      <div className="flex h-[56px] items-center justify-between px-4">
+        <button
+          type="button"
+          onClick={onBack}
+          aria-label="Back"
+          className={cn(
+            "grid size-8 place-items-center rounded-full text-ink transition active:scale-90",
+            !canBack && "pointer-events-none opacity-0",
+          )}
+        >
+          <ChevronLeft size={26} strokeWidth={2.2} />
+        </button>
+        <p className="font-ui text-[16px] font-bold tracking-[-0.2px] text-ink">{title}</p>
+        <Avatar />
+      </div>
+      <div className="relative h-[4px] w-full bg-line">
+        <div
+          className="absolute left-0 top-0 h-full rounded-r-full bg-progress transition-[width] duration-500 ease-out"
+          style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function Avatar() {
+  return (
+    <div className="relative size-8 shrink-0">
+      <div className="size-8 overflow-hidden rounded-full bg-gradient-to-br from-[#cbb8ff] to-[#efe6ff]" />
+      <span className="absolute bottom-0 right-0 size-[8px] rounded-full border-2 border-stage bg-good" />
+    </div>
+  );
+}
