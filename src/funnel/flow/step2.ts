@@ -1,0 +1,27 @@
+import type { Beat } from "@/funnel/flow/types";
+
+export const STEP2: Beat[] = [
+  { t: "bot", step: "audience", text: "Hey there again!" },
+  { t: "bot", text: "Now let's find your perfect viewers." },
+  { t: "bot", text: "When you know what drives them, your content hits the bullseye every time! 🎯" },
+  { t: "ask", id: "aud-start", q: { kind: "continue", label: "Okay, let's do it!" } },
+  { t: "bot", text: "What's the gender of your target audience?" },
+  { t: "ask", id: "gender", q: { kind: "gender", options: [{ label: "Male" }, { label: "Female" }, { label: "All genders" }] } },
+  { t: "bot", text: "Gotcha!" },
+  { t: "bot", text: "What's the age range of your target audience?" },
+  { t: "ask", id: "age", q: { kind: "age" } },
+  { t: "bot", text: "Noted! ✍️" },
+  { t: "bot", text: "Is it important for you to reach an audience in a specific location (like a country or city)?" },
+  { t: "ask", id: "location", q: { kind: "locYesNo", placeholder: "e.g. United States, London" } },
+  { t: "bot", text: "Got it!" },
+  { t: "bot", text: "What language does your target audience speak?" },
+  { t: "bot", text: "This helps me create your content plan, ideas, and scripts in the language they understand best." },
+  { t: "ask", id: "language", q: { kind: "language" } },
+  { t: "bot", text: "Perfect!" },
+  { t: "bot", text: "What problems or pain points does your target audience have?" },
+  { t: "ask", id: "pain", q: { kind: "text", placeholder: "e.g. They struggle to stay consistent and never have enough time to plan content." } },
+  { t: "bot", text: "And here comes the final question... drumroll 🥁" },
+  { t: "bot", text: "How would you describe your ideal target audience?" },
+  { t: "ask", id: "ideal-audience", q: { kind: "text", placeholder: "My ideal audience is young professionals aged 20-30, mostly based in Europe, interested in personal growth and digital design." } },
+  { t: "summary", id: "aud-summary", kind: "audience", cta: "Looks good!" },
+];

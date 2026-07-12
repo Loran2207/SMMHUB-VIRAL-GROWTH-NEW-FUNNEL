@@ -3,6 +3,8 @@ import { cn } from "@/lib/cn";
 import type { Question } from "@/funnel/flow/types";
 import { Sheet, PrimaryButton, OptionRow } from "@/funnel/components/ui";
 import { NicheGen } from "@/funnel/components/NicheGen";
+import { Gender, AgeSelect, LanguageSelect, LocationYesNo } from "@/funnel/components/AudienceInputs";
+import { EmailInput, OptIn, MultiSelect } from "@/funnel/components/ContactInputs";
 
 export function QuestionSheet({ q, onAnswer }: { q: Question; onAnswer: (v: string) => void }) {
   switch (q.kind) {
@@ -25,6 +27,20 @@ export function QuestionSheet({ q, onAnswer }: { q: Question; onAnswer: (v: stri
       return <TextInput q={q} onAnswer={onAnswer} />;
     case "nicheGen":
       return <NicheGen onAnswer={onAnswer} />;
+    case "gender":
+      return <Gender q={q} onAnswer={onAnswer} />;
+    case "age":
+      return <AgeSelect onAnswer={onAnswer} />;
+    case "language":
+      return <LanguageSelect onAnswer={onAnswer} />;
+    case "locYesNo":
+      return <LocationYesNo q={q} onAnswer={onAnswer} />;
+    case "email":
+      return <EmailInput onAnswer={onAnswer} />;
+    case "optin":
+      return <OptIn q={q} onAnswer={onAnswer} />;
+    case "multi":
+      return <MultiSelect q={q} onAnswer={onAnswer} />;
     default:
       return <Sheet><div className="p-4"><PrimaryButton onClick={() => onAnswer("Continue")}>Continue</PrimaryButton></div></Sheet>;
   }
