@@ -80,3 +80,6 @@
 @font-face { font-family: "Gilroy"; src: url("/fonts/Gilroy-Bold.ttf") format("truetype"); font-weight: 700; font-style: normal; font-display: swap; }
 @font-face { font-family: "Gilroy"; src: url("/fonts/Gilroy-ExtraBold.ttf") format("truetype"); font-weight: 800; font-style: normal; font-display: swap; }
 @font-face { font-family: "Gilroy"; src: url("/fonts/Gilroy-Heavy.ttf") format("truetype"); font-weight: 900; font-style: normal; font-display: swap; }
+
+.shadow-card { box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.04), 0 10px 22px -8px rgba(16, 24, 40, 0.10); }
+.shadow-card-sel { box-shadow: 0 1px 2px 0 rgba(97, 81, 252, 0.08), 0 12px 26px -8px rgba(97, 81, 252, 0.22); }

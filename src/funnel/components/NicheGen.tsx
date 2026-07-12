@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { RefreshCw } from "lucide-react";
-import { Sheet, PrimaryButton, Radio } from "@/funnel/components/ui";
+import { RefreshCw, Check } from "lucide-react";
+import { cn } from "@/lib/cn";
+import { Bottom, CardList, PrimaryButton } from "@/funnel/components/ui";
 
 const NICHES = [
   { title: "AI-Powered Marketing Launches", desc: "Teach freelancers and small business owners how to use AI tools to plan and launch their first marketing campaigns" },
@@ -11,26 +12,22 @@ const NICHES = [
 export function NicheGen({ onAnswer }: { onAnswer: (v: string) => void }) {
   const [sel, setSel] = useState<number | null>(null);
   return (
-    <Sheet>
-      <div className="max-h-[320px] overflow-y-auto">
+    <Bottom>
+      <CardList>
         {NICHES.map((n, i) => (
-          <button key={n.title} type="button" onClick={() => setSel(i)} className="flex w-full items-start gap-3 border-t border-line-soft px-4 py-4 text-left">
+          <button key={n.title} type="button" onClick={() => setSel(i)} className={cn("flex w-full items-start gap-3 rounded-[16px] border bg-white px-[18px] py-[16px] text-left transition-all", sel === i ? "border-accent shadow-card-sel" : "border-[#ececf1] shadow-card")}>
             <div className="flex-1">
-              <div className="font-ui text-[15px] font-bold text-ink">{n.title}</div>
+              <div className={cn("font-ui text-[15px] font-bold", sel === i ? "text-accent" : "text-ink")}>{n.title}</div>
               <p className="mt-1 font-ui text-[12.5px] leading-snug text-ink-soft">{n.desc}</p>
             </div>
-            <Radio on={sel === i} />
+            <span className={cn("mt-0.5 grid size-[22px] shrink-0 place-items-center rounded-[7px] border-[1.5px]", sel === i ? "border-accent bg-accent text-white" : "border-[#d6d9e3]")}>{sel === i && <Check size={13} strokeWidth={3.5} />}</span>
           </button>
         ))}
+      </CardList>
+      <div className="flex items-stretch gap-3 px-4 pb-4 pt-2">
+        <button type="button" onClick={() => setSel(null)} aria-label="Regenerate" className="grid size-[56px] shrink-0 place-items-center rounded-[16px] border border-[#ececf1] bg-white text-ink shadow-card active:scale-95"><RefreshCw size={20} /></button>
+        <div className="flex-1"><PrimaryButton disabled={sel === null} onClick={() => sel !== null && onAnswer(NICHES[sel].title)}>Confirm</PrimaryButton></div>
       </div>
-      <div className="flex items-stretch gap-3 border-t border-line-soft p-4">
-        <button type="button" onClick={() => setSel(null)} aria-label="Regenerate" className="grid size-[56px] shrink-0 place-items-center rounded-[16px] border border-line bg-surface text-ink active:scale-95">
-          <RefreshCw size={20} />
-        </button>
-        <div className="flex-1">
-          <PrimaryButton disabled={sel === null} onClick={() => sel !== null && onAnswer(NICHES[sel].title)}>Confirm</PrimaryButton>
-        </div>
-      </div>
-    </Sheet>
+    </Bottom>
   );
 }

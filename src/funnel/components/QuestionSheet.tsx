@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Check, X } from "lucide-react";
 import type { Question } from "@/funnel/flow/types";
-import { Sheet, PrimaryButton } from "@/funnel/components/ui";
+import { Bottom, PrimaryButton } from "@/funnel/components/ui";
 import { SingleSelect, NicheList } from "@/funnel/components/SelectInputs";
 import { NicheGen } from "@/funnel/components/NicheGen";
 import { Gender, AgeSelect, LanguageSelect, LocationYesNo } from "@/funnel/components/AudienceInputs";
@@ -9,7 +10,7 @@ import { EmailInput, OptIn, MultiSelect } from "@/funnel/components/ContactInput
 export function QuestionSheet({ q, onAnswer }: { q: Question; onAnswer: (v: string) => void }) {
   switch (q.kind) {
     case "continue":
-      return <Sheet><div className="p-4"><PrimaryButton onClick={() => onAnswer(q.label)}>{q.label}</PrimaryButton></div></Sheet>;
+      return <Bottom><div className="px-4 pb-4 pt-3"><PrimaryButton onClick={() => onAnswer(q.label)}>{q.label}</PrimaryButton></div></Bottom>;
     case "yesno":
       return <YesNo onAnswer={onAnswer} />;
     case "single":
@@ -39,23 +40,34 @@ export function QuestionSheet({ q, onAnswer }: { q: Question; onAnswer: (v: stri
   }
 }
 
-function YesNo({ onAnswer }: { onAnswer: (v: string) => void }) {
+export function YesNo({ onAnswer }: { onAnswer: (v: string) => void }) {
   return (
-    <Sheet>
-      <div className="flex gap-3 p-4">
-        <button type="button" onClick={() => onAnswer("Yes")} className="flex h-[56px] flex-1 items-center justify-center gap-2 rounded-[16px] border-2 border-line bg-surface font-ui text-[16px] font-bold text-ink active:scale-[0.99]"><span className="text-good">&#10003;</span> Yes</button>
-        <button type="button" onClick={() => onAnswer("No")} className="flex h-[56px] flex-1 items-center justify-center gap-2 rounded-[16px] border-2 border-line bg-surface font-ui text-[16px] font-bold text-ink active:scale-[0.99]"><span className="text-bad">&#10007;</span> No</button>
+    <Bottom>
+      <div className="flex gap-3 px-4 pb-4 pt-3">
+        <YNBtn yes onClick={() => onAnswer("Yes")} />
+        <YNBtn onClick={() => onAnswer("No")} />
       </div>
-    </Sheet>
+    </Bottom>
+  );
+}
+
+function YNBtn({ yes, onClick }: { yes?: boolean; onClick: () => void }) {
+  return (
+    <button type="button" onClick={onClick} className="flex h-[60px] flex-1 items-center justify-center gap-2.5 rounded-[16px] border border-[#ececf1] bg-white shadow-card transition-all active:scale-[0.99]">
+      <span className={`grid size-6 place-items-center rounded-full ${yes ? "bg-[#e7f8ef] text-good" : "bg-[#fdecea] text-bad"}`}>{yes ? <Check size={15} strokeWidth={3} /> : <X size={15} strokeWidth={3} />}</span>
+      <span className="font-ui text-[16px] font-bold text-ink">{yes ? "Yes" : "No"}</span>
+    </button>
   );
 }
 
 function TextInput({ q, onAnswer }: { q: Extract<Question, { kind: "text" }>; onAnswer: (v: string) => void }) {
   const [v, setV] = useState("");
   return (
-    <Sheet>
-      <div className="p-4"><textarea value={v} onChange={(e) => setV(e.target.value)} rows={3} placeholder={q.placeholder} className="min-h-[92px] w-full resize-none rounded-[12px] border-2 border-line bg-surface p-3 font-ui text-[15px] leading-relaxed text-ink outline-none placeholder:text-ink-faint" /></div>
-      <div className="px-4 pb-4"><PrimaryButton disabled={!v.trim()} onClick={() => onAnswer(v.trim())}>{q.cta ?? "Next"}</PrimaryButton></div>
-    </Sheet>
+    <Bottom>
+      <div className="px-4 pt-3">
+        <textarea value={v} onChange={(e) => setV(e.target.value)} rows={3} placeholder={q.placeholder} className="min-h-[104px] w-full resize-none rounded-[16px] border border-[#ececf1] bg-white p-4 font-ui text-[15px] leading-relaxed text-ink shadow-card outline-none transition-colors placeholder:text-ink-faint focus:border-accent" />
+      </div>
+      <div className="px-4 pb-4 pt-3"><PrimaryButton disabled={!v.trim()} onClick={() => onAnswer(v.trim())}>{q.cta ?? "Next"}</PrimaryButton></div>
+    </Bottom>
   );
 }

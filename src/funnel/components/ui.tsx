@@ -2,18 +2,16 @@ import type { ReactNode } from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/cn";
 
-/** White rounded-top sheet (used for text/email/continue/yesno). */
 export function Sheet({ children }: { children: ReactNode }) {
-  return <div className="w-full rounded-t-[16px] bg-surface shadow-sheet">{children}</div>;
+  return <div className="w-full bg-stage">{children}</div>;
 }
 
-/** Light bottom area on the stage bg (used for card-based selects). */
 export function Bottom({ children }: { children: ReactNode }) {
-  return <div className="w-full border-t border-line/70 bg-stage">{children}</div>;
+  return <div className="w-full bg-stage">{children}</div>;
 }
 
 export function CardList({ children }: { children: ReactNode }) {
-  return <div className="flex max-h-[46vh] flex-col gap-2.5 overflow-y-auto px-4 pb-1 pt-4">{children}</div>;
+  return <div className="flex max-h-[46vh] flex-col gap-3 overflow-y-auto px-4 pb-1 pt-3">{children}</div>;
 }
 
 export function PrimaryButton({ children, onClick, disabled }: { children: ReactNode; onClick?: () => void; disabled?: boolean }) {
@@ -23,8 +21,8 @@ export function PrimaryButton({ children, onClick, disabled }: { children: React
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "h-[56px] w-full rounded-[16px] font-ui text-[16px] font-bold text-white transition",
-        disabled ? "bg-[#c3c4d0]" : "bg-primary shadow-cta active:scale-[0.99]",
+        "h-[56px] w-full rounded-[16px] font-ui text-[16px] font-bold text-white transition-all",
+        disabled ? "bg-[#c7c9d6]" : "bg-primary shadow-[0_10px_22px_-8px_rgba(45,50,81,0.5)] active:scale-[0.99]",
       )}
     >
       {children}
@@ -32,7 +30,7 @@ export function PrimaryButton({ children, onClick, disabled }: { children: React
   );
 }
 
-/** Bordered option card (image #80 style). control: check | none */
+/** Premium bordered option card. control: check | none */
 export function OptionCard({ label, selected, onClick, control = "check" }: {
   label: string; selected: boolean; onClick: () => void; control?: "check" | "none";
 }) {
@@ -41,13 +39,13 @@ export function OptionCard({ label, selected, onClick, control = "check" }: {
       type="button"
       onClick={onClick}
       className={cn(
-        "flex w-full items-center gap-3 rounded-[14px] border-2 bg-surface px-4 py-[14px] text-left transition-colors",
-        selected ? "border-accent" : "border-line hover:border-line",
+        "flex w-full items-center gap-3 rounded-[16px] border bg-white px-[18px] py-[16px] text-left transition-all duration-150",
+        selected ? "border-accent shadow-card-sel" : "border-[#ececf1] shadow-card hover:border-[#d9dcea]",
       )}
     >
-      <span className={cn("flex-1 font-ui text-[15px] font-semibold", selected ? "text-accent" : "text-ink")}>{label}</span>
+      <span className={cn("flex-1 font-ui text-[15px] font-semibold leading-snug", selected ? "text-accent" : "text-ink")}>{label}</span>
       {control === "check" && (
-        <span className={cn("grid size-[22px] shrink-0 place-items-center rounded-[6px] border-2", selected ? "border-accent bg-accent text-white" : "border-line")}>
+        <span className={cn("grid size-[22px] shrink-0 place-items-center rounded-[7px] border-[1.5px] transition-colors", selected ? "border-accent bg-accent text-white" : "border-[#d6d9e3]")}>
           {selected && <Check size={13} strokeWidth={3.5} />}
         </span>
       )}
@@ -57,19 +55,8 @@ export function OptionCard({ label, selected, onClick, control = "check" }: {
 
 export function Radio({ on }: { on: boolean }) {
   return (
-    <span className={cn("grid size-[18px] shrink-0 place-items-center rounded-full border", on ? "border-accent bg-accent" : "border-line")}>
+    <span className={cn("grid size-[20px] shrink-0 place-items-center rounded-full border-[1.5px]", on ? "border-accent bg-accent" : "border-[#d6d9e3]")}>
       {on && <span className="size-[7px] rounded-full bg-white" />}
     </span>
-  );
-}
-
-export function OptionRow({ label, on, onClick, control = "radio" }: {
-  label: string; on: boolean; onClick: () => void; control?: "radio" | "none";
-}) {
-  return (
-    <button type="button" onClick={onClick} className="flex w-full items-center gap-3 border-t border-line-soft px-4 py-[15px] text-left">
-      <span className="flex-1 font-ui text-[15px] font-medium tracking-[-0.225px] text-ink">{label}</span>
-      {control === "radio" && <Radio on={on} />}
-    </button>
   );
 }
