@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { Loader2, Search, Star, Heart, Ban, User, Instagram, Users, Globe, Zap, Frown, Meh, Target, Send, Eye, DollarSign, TrendingUp } from "lucide-react";
+import { Loader2, Search, Star, Heart, Sparkles, User, Instagram, Users, Globe, Zap, Frown, Meh, Target, Send, Eye, DollarSign, TrendingUp } from "lucide-react";
 import { SummaryShell, TopCard, InfoRow, FeaturedIcon } from "@/funnel/components/SummaryShell";
 import type { Answers } from "@/funnel/flow/types";
 
@@ -17,15 +17,15 @@ export function SummaryScreen({ kind, cta, answers, onNext, onBack }: {
 type P = { answers: Answers; cta: string; onNext: () => void; onBack?: () => void };
 
 function DnaSummary({ answers, cta, onNext, onBack }: P) {
-  const niche = answers["niche-list"] ?? answers["niche-gen"] ?? "-";
+  const niche = answers["niche-list"] ?? answers["niche-gen"] ?? "Your niche";
   return (
     <SummaryShell title="Creator DNA" cta={cta} onNext={onNext} onBack={onBack} note={NOTE}
       subtitle={<>This will help us customize your <b className="font-semibold text-ink">content strategy</b> specifically for you.</>}>
       <TopCard cols={[{ icon: <User size={22} />, label: "You are", value: answers.describe ?? "-" }, { icon: <Instagram size={22} />, label: "Niche", value: niche }]} />
       <InfoRow icon={<Search size={16} />} label="Your niche" value={niche} />
-      {answers.topics && <InfoRow icon={<Heart size={16} />} label="Topics & Trends" value={answers.topics} />}
-      {answers.skills && <InfoRow icon={<Star size={16} />} label="Skills & experience" value={answers.skills} />}
-      {answers.advice && <InfoRow icon={<Ban size={16} />} label="People ask you about" value={answers.advice} />}
+      <InfoRow icon={<Star size={16} />} label="Unique feature" value={answers.skills ?? "You turn complex ideas into simple, relatable content"} />
+      <InfoRow icon={<Heart size={16} />} label="Topics & Trends" value={answers.topics ?? "Practical tips and fresh takes in your niche"} />
+      <InfoRow icon={<Sparkles size={16} />} label="Content style" value="Authentic, punchy and made for short-form" />
     </SummaryShell>
   );
 }

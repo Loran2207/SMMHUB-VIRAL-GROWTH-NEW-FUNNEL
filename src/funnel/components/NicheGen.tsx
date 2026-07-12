@@ -15,7 +15,7 @@ export function NicheGen({ onAnswer }: { onAnswer: (v: string) => void }) {
     <Bottom>
       <CardList>
         {NICHES.map((n, i) => (
-          <button key={n.title} type="button" onClick={() => setSel(i)} className={cn("flex w-full items-start gap-3 rounded-[16px] border bg-white px-[18px] py-[16px] text-left transition-all", sel === i ? "border-accent shadow-card-sel" : "border-[#ececf1] shadow-card")}>
+          <button key={n.title} type="button" onClick={() => setSel(i)} className={cn("flex w-full items-start gap-3 rounded-[16px] bg-white px-[18px] py-[16px] text-left transition-all", sel === i ? "border-2 border-accent shadow-card-sel" : "border border-[#eceef3] shadow-card")}>
             <div className="flex-1">
               <div className={cn("font-ui text-[15px] font-bold", sel === i ? "text-accent" : "text-ink")}>{n.title}</div>
               <p className="mt-1 font-ui text-[12.5px] leading-snug text-ink-soft">{n.desc}</p>

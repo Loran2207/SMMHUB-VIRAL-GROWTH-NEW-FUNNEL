@@ -36,9 +36,9 @@ export function Header({ title, progress, onBack, canBack = true }: {
 
 function Avatar() {
   return (
-    <div className="relative size-8 shrink-0">
-      <img src="/img/avatar.png" alt="" className="size-8 rounded-full object-cover" />
-      <span className="absolute bottom-0 right-0 size-[8px] rounded-full border-2 border-stage bg-good" />
+    <div className="relative size-9 shrink-0">
+      <div className="size-9 rounded-full bg-[#ebebee] bg-cover" style={{ backgroundImage: "url(/img/avatar.png)", backgroundSize: "165%", backgroundPosition: "50% 14%" }} />
+      <span className="absolute bottom-0 right-0 size-[9px] rounded-full border-2 border-[#fafafb] bg-good" />
     </div>
   );
 }

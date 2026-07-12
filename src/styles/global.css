@@ -81,5 +81,11 @@
 @font-face { font-family: "Gilroy"; src: url("/fonts/Gilroy-ExtraBold.ttf") format("truetype"); font-weight: 800; font-style: normal; font-display: swap; }
 @font-face { font-family: "Gilroy"; src: url("/fonts/Gilroy-Heavy.ttf") format("truetype"); font-weight: 900; font-style: normal; font-display: swap; }
 
-.shadow-card { box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.04), 0 10px 22px -8px rgba(16, 24, 40, 0.10); }
-.shadow-card-sel { box-shadow: 0 1px 2px 0 rgba(97, 81, 252, 0.08), 0 12px 26px -8px rgba(97, 81, 252, 0.22); }
+.shadow-card { box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.06), 0 1px 2px -1px rgba(16, 24, 40, 0.05); }
+.shadow-card-sel { box-shadow: 0 2px 8px -2px rgba(97, 81, 252, 0.16), 0 1px 3px 0 rgba(97, 81, 252, 0.08); }
+
+.pz-range { -webkit-appearance: none; appearance: none; background: transparent; pointer-events: none; }
+.pz-range::-webkit-slider-runnable-track { background: transparent; height: 100%; }
+.pz-range::-webkit-slider-thumb { -webkit-appearance: none; pointer-events: auto; height: 26px; width: 26px; border-radius: 9999px; background: #fff; border: 2px solid #6151fc; box-shadow: 0 2px 6px rgba(16, 24, 40, 0.18); cursor: pointer; }
+.pz-range::-moz-range-track { background: transparent; }
+.pz-range::-moz-range-thumb { pointer-events: auto; height: 26px; width: 26px; border-radius: 9999px; background: #fff; border: 2px solid #6151fc; box-shadow: 0 2px 6px rgba(16, 24, 40, 0.18); cursor: pointer; }

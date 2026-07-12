@@ -39,8 +39,8 @@ export function OptionCard({ label, selected, onClick, control = "check" }: {
       type="button"
       onClick={onClick}
       className={cn(
-        "flex w-full items-center gap-3 rounded-[16px] border bg-white px-[18px] py-[16px] text-left transition-all duration-150",
-        selected ? "border-accent shadow-card-sel" : "border-[#ececf1] shadow-card hover:border-[#d9dcea]",
+        "flex w-full items-center gap-3 rounded-[16px] bg-white px-[18px] py-[16px] text-left transition-all duration-150",
+        selected ? "border-2 border-accent shadow-card-sel" : "border border-[#eceef3] shadow-card hover:border-[#d9dcea]",
       )}
     >
       <span className={cn("flex-1 font-ui text-[15px] font-semibold leading-snug", selected ? "text-accent" : "text-ink")}>{label}</span>

@@ -42,9 +42,9 @@ export function SummaryShell({ title, subtitle, children, note, cta, onNext, onB
   title: string; subtitle: ReactNode; children: ReactNode; note: string; cta: string; onNext: () => void; onBack?: () => void;
 }) {
   return (
-    <div className="relative flex min-h-0 flex-1 flex-col bg-gradient-to-b from-white to-[#fefeff]">
-      <div className="min-h-0 flex-1 overflow-y-auto pb-[168px]">
-        <div className="flex flex-col items-center gap-3 px-[52px] pt-5">
+    <div className="flex min-h-0 flex-1 flex-col bg-gradient-to-b from-white to-[#fefeff]">
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="flex flex-col items-center gap-3 px-[52px] pt-6">
           <h2 className="text-center font-ui text-[31px] font-extrabold italic leading-[1.1]">
             <span className="inline-flex items-center gap-1.5 text-accent">Your <Emblem /></span>
             <span className="block text-ink">{title}</span>
@@ -52,15 +52,13 @@ export function SummaryShell({ title, subtitle, children, note, cta, onNext, onB
           <p className="w-[294px] text-center font-ui text-[14px] font-medium leading-[1.4] text-ink-soft">{subtitle}</p>
         </div>
         {children}
+        <div className="px-4 pt-6">
+          <div className="rounded-[12px] border border-[#a4f3cb] bg-[#eafdf0] px-4 py-2.5"><p className="font-ui text-[13px] font-semibold leading-[1.4] text-[#34453a]">{note}</p></div>
+        </div>
       </div>
-      <div className="absolute inset-x-0 bottom-0">
-        <div className="bg-gradient-to-b from-white/0 to-white to-[12%] px-4 pt-5">
-          <div className="rounded-[12px] border border-[#a4f3cb] bg-[#eafdf0] px-4 py-2.5"><p className="font-ui text-[13.5px] font-semibold leading-[1.4] text-[#34453a]">{note}</p></div>
-        </div>
-        <div className="flex gap-3 bg-white p-4">
-          <button type="button" onClick={onBack} className="flex h-[56px] items-center gap-1 rounded-[16px] border border-[#dedfe4] bg-white pl-3 pr-4 font-ui text-[16px] font-bold text-ink active:scale-[0.99]"><ChevronLeft size={20} /> Prev</button>
-          <button type="button" onClick={onNext} className="h-[56px] flex-1 rounded-[16px] bg-[#2d3251] font-ui text-[16px] font-bold text-white active:scale-[0.99]">{cta}</button>
-        </div>
+      <div className="flex shrink-0 gap-3 border-t border-line-soft bg-white p-4">
+        <button type="button" onClick={onBack} className="flex h-[56px] items-center gap-1 rounded-[16px] border border-[#dedfe4] bg-white pl-3 pr-4 font-ui text-[16px] font-bold text-ink active:scale-[0.99]"><ChevronLeft size={20} /> Prev</button>
+        <button type="button" onClick={onNext} className="h-[56px] flex-1 rounded-[16px] bg-[#2d3251] font-ui text-[16px] font-bold text-white active:scale-[0.99]">{cta}</button>
       </div>
     </div>
   );
