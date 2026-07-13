@@ -13,8 +13,8 @@ import { useFunnel } from "@/funnel/useFunnel";
 import { FLOW } from "@/funnel/flow";
 import type { Answers, ScreenKind } from "@/funnel/flow/types";
 
-function ScreenView({ screen, onNext }: { screen: ScreenKind; onNext: () => void }) {
-  if (screen === "hero") return <Hero onNext={onNext} />;
+function ScreenView({ screen, onNext, hold }: { screen: ScreenKind; onNext: () => void; hold?: boolean }) {
+  if (screen === "hero") return <Hero onNext={onNext} hold={hold} />;
   if (screen === "welcome1") return <Welcome1 onNext={onNext} />;
   if (screen === "welcome2") return <Welcome2 onNext={onNext} />;
   if (screen === "today") return <Today onNext={onNext} />;
@@ -31,7 +31,7 @@ export function FunnelPage({ initial, instant, keyboard }: { initial?: Answers; 
   const active = f.active;
 
   if (f.done) return <LoggedIn onNext={() => { window.location.href = "/"; }} />;
-  if (active?.t === "screen") return <ScreenView screen={active.screen} onNext={() => f.answer(active.id, "done")} />;
+  if (active?.t === "screen") return <ScreenView screen={active.screen} onNext={() => f.answer(active.id, "done")} hold={instant} />;
 
   return (
     <PhoneFrame keyboard={keyboard}>

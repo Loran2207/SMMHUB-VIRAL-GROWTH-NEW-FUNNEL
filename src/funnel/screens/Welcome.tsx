@@ -1,13 +1,27 @@
 import type { ReactNode } from "react";
 import { PhoneFrame } from "@/funnel/components/PhoneFrame";
 import { BrowserChrome } from "@/funnel/components/BrowserChrome";
+import { WelcomeSwoosh, WelcomeScrim } from "@/funnel/screens/icons";
 
-function PhotoScreen({ img, children }: { img: string; children: ReactNode }) {
+/**
+ * Welcome 1/2 (Figma 45573:6126) and Welcome 2/2 (45573:6146).
+ *
+ * Both frames use byte-identical artwork - a room photo (/img/welcome-bg.png) with Sandy composited
+ * on top (/img/welcome-girl.png) - and differ only in the caption stack: 1/2 shows one card, 2/2
+ * adds the second card and the Continue button. They are the two states of one animation, so both
+ * are kept.
+ *
+ * The header (wordmark, "Welcome Creator", swoosh) sits at the TOP of the photo, not the bottom.
+ */
+function PhotoStage({ children }: { children: ReactNode }) {
   return (
     <PhoneFrame>
-      <BrowserChrome dark>
-        <div className="relative flex h-full w-full flex-col overflow-hidden bg-black">
-          <img src={img} alt="" className="absolute inset-0 size-full object-cover" />
+      <BrowserChrome>
+        <div className="relative flex h-full w-full flex-col overflow-hidden bg-[#231a12]">
+          <img src="/img/welcome-bg.png" alt="" aria-hidden draggable={false} className="absolute inset-0 size-full select-none object-cover" />
+          <img src="/img/welcome-girl.png" alt="" draggable={false} className="absolute inset-0 size-full select-none object-cover" />
+          {/* Figma "Blur": a 194px scrim pinned to the bottom. Inline <svg> gradient, not CSS. */}
+          <WelcomeScrim className="pointer-events-none absolute inset-x-0 bottom-0 h-[194px] w-full" />
           <div className="relative z-10 flex h-full flex-col">{children}</div>
         </div>
       </BrowserChrome>
@@ -15,64 +29,107 @@ function PhotoScreen({ img, children }: { img: string; children: ReactNode }) {
   );
 }
 
+/** Wordmark + "Welcome Creator" + the hand-drawn underline. Figma: pt-20, gap-8, centred. */
 function WelcomeHead() {
   return (
-    <>
-      <p className="font-brand text-[12px] font-extrabold tracking-[0.08em] text-white/80">SMMHUB</p>
-      <h1 className="font-ui text-[32px] font-extrabold italic leading-[1.02]">Welcome<br />Creator</h1>
-    </>
+    <div className="flex flex-1 flex-col items-center gap-[8px] pt-[20px]">
+      <p className="w-full text-center font-brand text-[12px] font-extrabold text-white/80">SMMHUB</p>
+      <div className="flex w-full flex-col items-center">
+        <p className="w-full text-center font-ui text-[32.3px] font-extrabold italic leading-[1.1] text-white">Welcome</p>
+        <p className="w-full text-center font-ui text-[32.3px] font-extrabold italic leading-[1.1] text-white">Creator</p>
+        <WelcomeSwoosh className="h-[14px] w-[151px] shrink-0" />
+      </div>
+    </div>
   );
 }
 
-const CARD = "rounded-[16px] bg-[#1e100b]/70 p-4 font-brand text-[16px] leading-relaxed text-white/90 backdrop-blur-[4px]";
-
-/** Scrim behind the bottom copy. A baked PNG, not a CSS gradient: CSS gradients capture as a flat grey
- *  rectangle in Figma, an <img> captures as an image fill. */
-function Scrim() {
-  return <img src="/img/scrim-dark.png" alt="" aria-hidden className="absolute inset-0 size-full" />;
+/** Figma "Coach Text Container": rgba(30,16,11,0.64), radius 16, 16/12 padding, Gilroy 16/1.5. */
+function CaptionCard({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex w-full items-center justify-center rounded-[16px] bg-[rgba(30,16,11,0.64)] px-[16px] py-[12px] backdrop-blur-[4px]">
+      <p className="flex-1 font-brand text-[16px] font-medium leading-[1.5] text-white/90">{children}</p>
+    </div>
+  );
 }
+
+const SANDY = (
+  <>
+    I&apos;m Sandy, your <b className="font-bold text-white">Social Media Coach</b> - here to help you{" "}
+    <b className="font-bold text-white">grow your audience with confidence.</b>
+  </>
+);
 
 export function Welcome1({ onNext }: { onNext: () => void }) {
   return (
-    <PhotoScreen img="/img/welcome-woman.png">
-      <div onClick={onNext} className="relative mt-auto cursor-pointer px-5 pb-6 pt-28 text-white">
-        <Scrim />
-        <div className="relative flex flex-col gap-3">
-          <WelcomeHead />
-          <div className={CARD}>I&apos;m Sandy, your <b>Social Media Coach</b> - here to help you <b>grow your audience with confidence.</b></div>
+    <PhotoStage>
+      <div onClick={onNext} className="flex h-full cursor-pointer flex-col">
+        <WelcomeHead />
+        <div className="flex w-full flex-col items-center">
+          <div className="w-full px-[16px]">
+            <CaptionCard>{SANDY}</CaptionCard>
+          </div>
+          {/* Figma leaves an 88px gap where 2/2 puts the Continue button. */}
+          <div className="h-[88px] w-full" />
         </div>
       </div>
-    </PhotoScreen>
+    </PhotoStage>
   );
 }
 
 export function Welcome2({ onNext }: { onNext: () => void }) {
   return (
-    <PhotoScreen img="/img/welcome-woman.png">
-      <div className="relative mt-auto px-5 pb-5 pt-20 text-white">
-        <Scrim />
-        <div className="relative flex flex-col gap-3">
-          <WelcomeHead />
-          <div className={CARD}>I&apos;m Sandy, your <b>Social Media Coach</b> - here to help you <b>grow your audience with confidence.</b></div>
-          <div className={CARD}>Let&apos;s build your <b>personalized growth plan.</b></div>
-          <button type="button" onClick={onNext} className="mt-1 h-[56px] w-full rounded-[16px] bg-white font-ui text-[16px] font-bold text-ink shadow-[0_8px_12px_rgba(0,0,0,0.1)] active:scale-[0.99]">Continue</button>
+    <PhotoStage>
+      <div className="flex h-full flex-col">
+        <WelcomeHead />
+        <div className="flex w-full flex-col items-center">
+          <div className="flex w-full flex-col gap-[8px] px-[16px]">
+            <CaptionCard>{SANDY}</CaptionCard>
+            <CaptionCard>
+              Let&apos;s build your <b className="font-bold text-white">personalized growth plan.</b>
+            </CaptionCard>
+          </div>
+          <div className="w-full p-[16px]">
+            <button
+              type="button"
+              onClick={onNext}
+              className="h-[56px] w-full rounded-[16px] bg-white font-ui text-[16px] font-bold text-ink shadow-[0_8px_12px_rgba(0,0,0,0.1)] active:scale-[0.99]"
+            >
+              Continue
+            </button>
+          </div>
         </div>
       </div>
-    </PhotoScreen>
+    </PhotoStage>
   );
 }
 
+/** Post-purchase confirmation. Same room photo, no Sandy. */
 export function LoggedIn({ onNext }: { onNext: () => void }) {
   return (
-    <PhotoScreen img="/img/loggedin-room.png">
-      <div className="flex h-full flex-col items-center justify-center px-6 text-center text-white">
-        <div className="text-[64px] leading-none">&#10003;</div>
-        <p className="mt-3 font-brand text-[16px] font-medium text-white/90">You&apos;re logged in as <b className="font-semibold text-white">email@example.com</b></p>
-        <p className="mt-1 font-brand text-[16px] font-medium text-white">Your plan <b className="font-semibold text-[#4de55a]">is active!</b></p>
-        <div className="absolute inset-x-0 bottom-5 px-5">
-          <button type="button" onClick={onNext} className="h-[56px] w-full rounded-[16px] bg-white font-ui text-[16px] font-bold text-ink shadow-[0_8px_12px_rgba(0,0,0,0.1)] active:scale-[0.99]">Let&apos;s grow &#128640;</button>
+    <PhoneFrame>
+      <BrowserChrome>
+        <div className="relative flex h-full w-full flex-col overflow-hidden bg-[#231a12]">
+          <img src="/img/loggedin-room.png" alt="" aria-hidden draggable={false} className="absolute inset-0 size-full select-none object-cover" />
+          <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center text-white">
+            <div className="text-[64px] leading-none">&#10003;</div>
+            <p className="mt-3 font-brand text-[16px] font-medium text-white/90">
+              You&apos;re logged in as <b className="font-semibold text-white">email@example.com</b>
+            </p>
+            <p className="mt-1 font-brand text-[16px] font-medium text-white">
+              Your plan <b className="font-semibold text-[#4de55a]">is active!</b>
+            </p>
+            <div className="absolute inset-x-0 bottom-5 px-5">
+              <button
+                type="button"
+                onClick={onNext}
+                className="h-[56px] w-full rounded-[16px] bg-white font-ui text-[16px] font-bold text-ink shadow-[0_8px_12px_rgba(0,0,0,0.1)] active:scale-[0.99]"
+              >
+                Let&apos;s grow &#128640;
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </PhotoScreen>
+      </BrowserChrome>
+    </PhoneFrame>
   );
 }
