@@ -47,9 +47,13 @@ export function ChoosePlan({ onStart }: { onStart: () => void }) {
       <div className="flex w-full flex-col items-start gap-[16px] px-4">
         <button
           type="button"
-          className="flex w-full items-center justify-center rounded-[12px] bg-white py-[8px] text-[14px] font-semibold leading-[17px] text-[#02082d] underline [text-decoration-skip-ink:none] [text-underline-position:from-font]"
+          className="flex w-full items-center justify-center rounded-[12px] bg-white py-[8px] text-[14px] font-semibold leading-[17px] text-[#02082d]"
         >
-          <span className="whitespace-nowrap text-center">MONEY-BACK GUARANTEE</span>
+          {/* The underline sits on the text node itself: the capture engine reads a text run own
+              style, so an underline inherited from the button is lost on the way into Figma. */}
+          <span className="whitespace-nowrap text-center underline [text-decoration-skip-ink:none] [text-underline-position:from-font]">
+            MONEY-BACK GUARANTEE
+          </span>
         </button>
 
         <StartButton label="Start My Plan" onStart={onStart} />
