@@ -31,8 +31,8 @@ export function PrimaryButton({ children, onClick, disabled }: { children: React
 }
 
 /** Premium bordered option card. control: check | none */
-export function OptionCard({ label, selected, onClick, control = "check" }: {
-  label: string; selected: boolean; onClick: () => void; control?: "check" | "none";
+export function OptionCard({ label, selected, onClick, control = "check", emoji }: {
+  label: string; selected: boolean; onClick: () => void; control?: "check" | "none"; emoji?: string;
 }) {
   return (
     <button
@@ -43,9 +43,10 @@ export function OptionCard({ label, selected, onClick, control = "check" }: {
         selected ? "border-2 border-accent shadow-card-sel" : "border border-[#eceef3] shadow-card hover:border-[#d9dcea]",
       )}
     >
+      {emoji && <span className="shrink-0 text-[17px] leading-none">{emoji}</span>}
       <span className={cn("flex-1 font-ui text-[15px] font-semibold leading-snug", selected ? "text-accent" : "text-ink")}>{label}</span>
       {control === "check" && (
-        <span className={cn("grid size-[22px] shrink-0 place-items-center rounded-[7px] border-[1.5px] transition-colors", selected ? "border-accent bg-accent text-white" : "border-[#d6d9e3]")}>
+        <span className={cn("grid size-[22px] shrink-0 place-items-center rounded-[7px] border-[1.5px] transition-colors", selected ? "border-accent bg-accent text-white" : "border-[#d6d9e3] bg-[#f1f1f4]")}>
           {selected && <Check size={13} strokeWidth={3.5} />}
         </span>
       )}

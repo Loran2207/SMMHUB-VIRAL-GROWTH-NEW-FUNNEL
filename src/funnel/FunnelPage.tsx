@@ -21,7 +21,7 @@ function ScreenView({ screen, onNext }: { screen: ScreenKind; onNext: () => void
   return <LoggedIn onNext={onNext} />;
 }
 
-export function FunnelPage({ initial, instant }: { initial?: Answers; instant?: boolean }) {
+export function FunnelPage({ initial, instant, keyboard }: { initial?: Answers; instant?: boolean; keyboard?: boolean }) {
   const f = useFunnel(FLOW, { initial, instant });
   const scroll = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -34,10 +34,10 @@ export function FunnelPage({ initial, instant }: { initial?: Answers; instant?: 
   if (active?.t === "screen") return <ScreenView screen={active.screen} onNext={() => f.answer(active.id, "done")} />;
 
   return (
-    <PhoneFrame>
+    <PhoneFrame keyboard={keyboard}>
       <BrowserChrome>
         {active?.t === "summary" ? (
-          <SummaryScreen kind={active.kind} cta={active.cta} answers={f.answers} onNext={() => f.answer(active.id, "done")} onBack={f.back} />
+          <SummaryScreen kind={active.kind} cta={active.cta} answers={f.answers} onNext={() => f.answer(active.id, "done")} />
         ) : (
           <>
             <Header title={f.title} progress={f.progress} onBack={f.back} canBack={f.canBack} />

@@ -4,7 +4,7 @@ import type { Question } from "@/funnel/flow/types";
 import { Bottom, PrimaryButton } from "@/funnel/components/ui";
 import { SingleSelect, NicheList } from "@/funnel/components/SelectInputs";
 import { NicheGen } from "@/funnel/components/NicheGen";
-import { Gender, AgeSelect, LanguageSelect, LocationYesNo } from "@/funnel/components/AudienceInputs";
+import { Gender, AgeSelect, LanguageSelect, YesNoText } from "@/funnel/components/AudienceInputs";
 import { EmailInput, OptIn, MultiSelect } from "@/funnel/components/ContactInputs";
 
 export function QuestionSheet({ q, onAnswer }: { q: Question; onAnswer: (v: string) => void }) {
@@ -27,8 +27,8 @@ export function QuestionSheet({ q, onAnswer }: { q: Question; onAnswer: (v: stri
       return <AgeSelect onAnswer={onAnswer} />;
     case "language":
       return <LanguageSelect onAnswer={onAnswer} />;
-    case "locYesNo":
-      return <LocationYesNo q={q} onAnswer={onAnswer} />;
+    case "yesNoText":
+      return <YesNoText q={q} onAnswer={onAnswer} />;
     case "email":
       return <EmailInput onAnswer={onAnswer} />;
     case "optin":

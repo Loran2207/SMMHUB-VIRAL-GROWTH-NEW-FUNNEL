@@ -14,7 +14,7 @@ function def(q: Question): string {
     case "language": return "English";
     case "email": return "you@gmail.com";
     case "optin": return q.yes;
-    case "locYesNo": return "No";
+    case "yesNoText": return "No";
   }
 }
 

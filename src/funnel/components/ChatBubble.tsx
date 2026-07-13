@@ -3,9 +3,9 @@ import { cn } from "@/lib/cn";
 
 const BASE = "w-fit px-4 py-3 font-ui text-[15px] font-medium leading-[1.5] tracking-[-0.225px] text-ink";
 
-export function BotBubble({ children, tail = true, className }: { children: ReactNode; tail?: boolean; className?: string }) {
+export function BotBubble({ children, tail = true, wide = false, className }: { children: ReactNode; tail?: boolean; wide?: boolean; className?: string }) {
   return (
-    <div className={cn(BASE, "max-w-[320px] bg-surface shadow-bubble", tail ? "rounded-[16px] rounded-bl-[2px]" : "rounded-[16px]", className)}>
+    <div className={cn(BASE, wide ? "max-w-full" : "max-w-[320px]", "bg-surface shadow-bubble", tail ? "rounded-[16px] rounded-bl-[2px]" : "rounded-[16px]", className)}>
       {children}
     </div>
   );

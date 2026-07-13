@@ -21,5 +21,7 @@ export default function App() {
   const seed = parseSeed(p);
   const deep = !!screen || Object.keys(seed).length > 0 || p.has("instant");
   const initial = deep ? seek(FLOW, screen, seed) : {};
-  return <FunnelPage initial={initial} instant={deep} />;
+  /** Capture-only: ?kb=1 overlays the real iOS keyboard so the board can show the typing state. */
+  const keyboard = p.get("kb") === "1";
+  return <FunnelPage initial={initial} instant={deep} keyboard={keyboard} />;
 }

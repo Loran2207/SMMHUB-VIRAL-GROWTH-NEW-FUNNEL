@@ -1,4 +1,11 @@
-import type { Answers, Beat } from "@/funnel/flow/types";
+import type { Answers, Beat, Bullet, Opt } from "@/funnel/flow/types";
+
+export const DESCRIBE_OPTIONS: Opt[] = [
+  { label: "Business Owner", emoji: "💼" },
+  { label: "Marketing Professional", emoji: "📣" },
+  { label: "Influencer/Blogger", emoji: "🧑‍🎤" },
+  { label: "Expert/Freelancer/Coach", emoji: "🧑" },
+];
 
 const no = (a: Answers) => a.hasNiche === "No";
 const yes = (a: Answers) => a.hasNiche === "Yes";
@@ -8,12 +15,7 @@ export const STEP1: Beat[] = [
   { t: "bot", text: "Think of it as three key components: Who, What, and Unique Feature.", card: { kind: "dna" } },
   { t: "ask", id: "dna-intro", q: { kind: "continue", label: "Got it! Let's move on" } },
   { t: "bot", text: "How would you describe yourself?" },
-  { t: "ask", id: "describe", q: { kind: "single", custom: true, options: [
-    { label: "💼 Business Owner" },
-    { label: "📣 Marketing Professional" },
-    { label: "🧑‍💻 Influencer / Blogger" },
-    { label: "🧑‍🏫 Expert / Freelancer / Coach" },
-  ] } },
+  { t: "ask", id: "describe", q: { kind: "single", custom: true, options: DESCRIBE_OPTIONS } },
   { t: "bot", text: "Got it! 🙌" },
   { t: "bot", text: "That was precisely the 'Who' part.", card: { kind: "dna", done: { who: true } } },
   { t: "ask", id: "who-next", q: { kind: "continue", label: "Alright, what's next?" } },
@@ -28,10 +30,10 @@ export const STEP1_NO: Beat[] = [
   { t: "bot", when: no, text: "We're sure you already have something valuable to offer your followers - and we can prove it." },
   { t: "ask", when: no, id: "no-please-do", q: { kind: "continue", label: "Please do!" } },
   { t: "bot", when: no, text: "Do you have any skills, experiences or hobbies that others might find interesting, helpful or valuable?" },
-  { t: "ask", when: no, id: "skills", q: { kind: "text", placeholder: "e.g. I help friends with their CVs, or I enjoy learning about skincare. Anything you've done more than once can count." } },
+  { t: "ask", when: no, id: "skills", q: { kind: "text", placeholder: "Your answer..." } },
   { t: "bot", when: no, text: "Got it!" },
   { t: "bot", when: no, text: "What topics do you love learning about?" },
-  { t: "ask", when: no, id: "topics", q: { kind: "text", placeholder: "e.g. Design, mindset, tech" } },
+  { t: "ask", when: no, id: "topics", q: { kind: "text", placeholder: "Your answer..." } },
   { t: "bot", when: no, text: "Okay, noted!" },
   { t: "bot", when: no, text: "Who do you love helping or chatting with the most?" },
   { t: "ask", when: no, id: "helping", q: { kind: "text", placeholder: "Your answer..." } },
@@ -48,19 +50,73 @@ export const STEP1_YES: Beat[] = [
   { t: "bot", when: yes, text: "Clear direction is the first step to growth." },
   { t: "bot", when: yes, text: "What's your niche?" },
   { t: "ask", when: yes, id: "niche-list", q: { kind: "nicheList", custom: true, options: [
-    { label: "💄 Beauty blogger" },
-    { label: "👩‍👧‍👦 Family / mom blogger" },
-    { label: "👗 Fashion & styling tips" },
-    { label: "🎥 Vlogs / relatable life content" },
-    { label: "💪 Fitness motivator" },
-    { label: "🍳 Food & recipe content" },
+    { label: "Beauty blogger", emoji: "💄" },
+    { label: "Family/mom blogger", emoji: "👩‍👧‍👦" },
+    { label: "Fashion & styling tips", emoji: "👗" },
+    { label: "Vlogs/relatable life content", emoji: "🎥" },
+    { label: "Fitness motivator", emoji: "💪" },
+    { label: "Food & recipe content", emoji: "🍳" },
   ] } },
 ];
+
+/** Tapping this asks the bot for examples instead of answering, so the flow branches on it. */
+export const EXAMPLE_ASK = "Do you have an example?";
+
+const UNIQUE_EXAMPLES: Bullet[] = [
+  { title: "Your story or background", sub: "career switch, immigrant experience, self-taught journey" },
+  { title: "Your point of view", sub: "honest takes, beginner-friendly, no fluff" },
+  { title: "A recognizable format or style", sub: "quick tips, \"before/after,\" mini storytelling" },
+  { title: "Your humor or tone", sub: "dry jokes, relatable memes, self-deprecating, bold & motivating, playful" },
+  { title: "A skill, experience, or promise to your audience", sub: "teaching, organizing, explaining simply, practical tips only, real examples" },
+];
+
+const wantsExample = (a: Answers) => a["unique-feature"] === EXAMPLE_ASK;
+const S = (label: string) => ({ label });
 
 export const STEP1_END: Beat[] = [
   { t: "bot", text: "Good job!" },
   { t: "bot", text: "You've chosen a niche with real power!" },
   { t: "ask", id: "dna-nailed", q: { kind: "continue", label: "I nailed it! 💪" } },
+  { t: "bot", text: "Your Creator DNA is shaping up nicely - but hold on, we're not done yet!", card: { kind: "dna", done: { who: true, what: true } } },
+  { t: "ask", id: "dna-next", q: { kind: "continue", label: "Next piece, please!" } },
+  { t: "bot", text: "Which platforms do you plan to post on?" },
+  { t: "ask", id: "platforms", q: { kind: "multi", cta: "Next", options: [S("Instagram"), S("YouTube"), S("TikTok"), S("Other")] } },
+  { t: "bot", text: "Understood, moving on!" },
+  { t: "bot", text: "Are there any topics, trends or interests you'd like to include in your content?" },
+  { t: "ask", id: "topics-include", q: { kind: "yesNoText", placeholder: "Enter text..." } },
+  { t: "bot", text: "Got you!" },
+  { t: "bot", text: "Are there any topics you'd like to avoid in your content?" },
+  { t: "ask", id: "topics-avoid", q: { kind: "yesNoText", placeholder: "Enter text..." } },
+  { t: "bot", text: "Almost there, creator! 🔜" },
+  { t: "bot", text: "Is there anything that makes you or your brand stand out?" },
+  { t: "ask", id: "unique-feature", q: { kind: "yesNoText", placeholder: "Enter text...", example: EXAMPLE_ASK } },
+  { t: "bot", when: wantsExample, text: "Not sure yet? Totally okay. Your \"unique thing\" can be simple, like:", list: UNIQUE_EXAMPLES },
+  { t: "bot", when: wantsExample, text: "So, how do you think, is there anything that makes you or your brand stand out?" },
+  { t: "ask", when: wantsExample, id: "unique-answer", q: { kind: "yesNoText", placeholder: "Enter text...", no: "Not yet - I'm still discovering my unique angle", yes: "Yes - I have a clear \"thing\" that makes my content feel like me" } },
   { t: "bot", text: "Boom! Your Creator DNA is ready! 🎉", card: { kind: "dna", done: { who: true, what: true, unique: true } } },
-  { t: "summary", id: "dna-summary", kind: "dna", cta: "Let's see the results" },
+  { t: "summary", id: "dna-summary", kind: "dna", cta: "First Mission complete!" },
 ];
+
+/** The "No" button of a yesNoText beat can carry a custom label (unique-answer has a long one),
+ *  so read the decline label off the beat itself instead of hardcoding it. */
+const declineLabel = (id: string): string => {
+  const b = STEP1_END.find((x) => x.t === "ask" && x.id === id);
+  return b?.t === "ask" && b.q.kind === "yesNoText" ? b.q.no ?? "No" : "No";
+};
+
+/** A yesNoText answer is either a decline or the text the user typed. Declines all collapse to
+ *  "No" for the summary; anything else is the users own words. */
+export function yesNoAnswer(answers: Answers, id: string): string | undefined {
+  const v = answers[id];
+  if (!v) return undefined;
+  return v === declineLabel(id) ? "No" : v;
+}
+
+/** unique-feature holds EXAMPLE_ASK when the user tapped "Do you have an example?" instead of
+ *  answering - that is a request for help, never their unique feature, so the real answer is
+ *  the one they gave afterwards on the unique-answer beat. */
+export function uniqueFeature(answers: Answers): string | undefined {
+  return answers["unique-feature"] === EXAMPLE_ASK
+    ? yesNoAnswer(answers, "unique-answer")
+    : yesNoAnswer(answers, "unique-feature");
+}

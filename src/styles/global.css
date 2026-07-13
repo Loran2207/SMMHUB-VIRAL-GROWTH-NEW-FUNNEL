@@ -63,7 +63,7 @@
     box-shadow: 0 -4px 10px 0 rgba(130, 147, 172, 0.1);
   }
   .shadow-cta {
-    box-shadow: 0 8px 20px -8px rgba(45, 50, 81, 0.35);
+    box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.06), 0 1px 2px -1px rgba(16, 24, 40, 0.05);
   }
 }
 
@@ -84,8 +84,23 @@
 .shadow-card { box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.06), 0 1px 2px -1px rgba(16, 24, 40, 0.05); }
 .shadow-card-sel { box-shadow: 0 2px 8px -2px rgba(97, 81, 252, 0.16), 0 1px 3px 0 rgba(97, 81, 252, 0.08); }
 
-.pz-range { -webkit-appearance: none; appearance: none; background: transparent; pointer-events: none; }
-.pz-range::-webkit-slider-runnable-track { background: transparent; height: 100%; }
-.pz-range::-webkit-slider-thumb { -webkit-appearance: none; pointer-events: auto; height: 26px; width: 26px; border-radius: 9999px; background: #fff; border: 2px solid #6151fc; box-shadow: 0 2px 6px rgba(16, 24, 40, 0.18); cursor: pointer; }
-.pz-range::-moz-range-track { background: transparent; }
-.pz-range::-moz-range-thumb { pointer-events: auto; height: 26px; width: 26px; border-radius: 9999px; background: #fff; border: 2px solid #6151fc; box-shadow: 0 2px 6px rgba(16, 24, 40, 0.18); cursor: pointer; }
+/* Summary pill card: Figma shadow-md. Offset down, so the top edge reads as a light highlight. */
+.shadow-pill {
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9),
+    0 2px 2px 0 rgba(16, 24, 40, 0.06),
+    0 4px 4px 0 rgba(16, 24, 40, 0.1);
+}
+/* Summary featured-icon tile: Figma shadow-xs. */
+.shadow-tile {
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px 0 rgba(16, 24, 40, 0.05);
+}
+
+/* Text field revealed after "Yes" in a yes/no-then-text question. */
+@keyframes pz-slide-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+.pz-slide-in { animation: pz-slide-in 200ms ease-out both; }

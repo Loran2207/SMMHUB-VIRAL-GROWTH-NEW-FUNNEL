@@ -26,12 +26,21 @@ function WelcomeHead() {
 
 const CARD = "rounded-[16px] bg-[#1e100b]/70 p-4 font-brand text-[16px] leading-relaxed text-white/90 backdrop-blur-[4px]";
 
+/** Scrim behind the bottom copy. A baked PNG, not a CSS gradient: CSS gradients capture as a flat grey
+ *  rectangle in Figma, an <img> captures as an image fill. */
+function Scrim() {
+  return <img src="/img/scrim-dark.png" alt="" aria-hidden className="absolute inset-0 size-full" />;
+}
+
 export function Welcome1({ onNext }: { onNext: () => void }) {
   return (
     <PhotoScreen img="/img/welcome-woman.png">
-      <div onClick={onNext} className="mt-auto flex cursor-pointer flex-col gap-3 bg-gradient-to-t from-[#231a12] via-[#231a12]/85 to-transparent px-5 pb-6 pt-28 text-white">
-        <WelcomeHead />
-        <div className={CARD}>I&apos;m Sandy, your <b>Social Media Coach</b> - here to help you <b>grow your audience with confidence.</b></div>
+      <div onClick={onNext} className="relative mt-auto cursor-pointer px-5 pb-6 pt-28 text-white">
+        <Scrim />
+        <div className="relative flex flex-col gap-3">
+          <WelcomeHead />
+          <div className={CARD}>I&apos;m Sandy, your <b>Social Media Coach</b> - here to help you <b>grow your audience with confidence.</b></div>
+        </div>
       </div>
     </PhotoScreen>
   );
@@ -40,11 +49,14 @@ export function Welcome1({ onNext }: { onNext: () => void }) {
 export function Welcome2({ onNext }: { onNext: () => void }) {
   return (
     <PhotoScreen img="/img/welcome-woman.png">
-      <div className="mt-auto flex flex-col gap-3 bg-gradient-to-t from-[#231a12] via-[#231a12]/85 to-transparent px-5 pb-5 pt-20 text-white">
-        <WelcomeHead />
-        <div className={CARD}>I&apos;m Sandy, your <b>Social Media Coach</b> - here to help you <b>grow your audience with confidence.</b></div>
-        <div className={CARD}>Let&apos;s build your <b>personalized growth plan.</b></div>
-        <button type="button" onClick={onNext} className="mt-1 h-[56px] w-full rounded-[16px] bg-white font-ui text-[16px] font-bold text-ink shadow-[0_8px_12px_rgba(0,0,0,0.1)] active:scale-[0.99]">Continue</button>
+      <div className="relative mt-auto px-5 pb-5 pt-20 text-white">
+        <Scrim />
+        <div className="relative flex flex-col gap-3">
+          <WelcomeHead />
+          <div className={CARD}>I&apos;m Sandy, your <b>Social Media Coach</b> - here to help you <b>grow your audience with confidence.</b></div>
+          <div className={CARD}>Let&apos;s build your <b>personalized growth plan.</b></div>
+          <button type="button" onClick={onNext} className="mt-1 h-[56px] w-full rounded-[16px] bg-white font-ui text-[16px] font-bold text-ink shadow-[0_8px_12px_rgba(0,0,0,0.1)] active:scale-[0.99]">Continue</button>
+        </div>
       </div>
     </PhotoScreen>
   );

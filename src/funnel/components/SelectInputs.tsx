@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/cn";
 import type { Question } from "@/funnel/flow/types";
-import { Bottom, CardList, OptionCard, PrimaryButton } from "@/funnel/components/ui";
+import { Bottom, CardList, OptionCard } from "@/funnel/components/ui";
 
 function AnswerField({ value, onChange, onSend }: { value: string; onChange: (v: string) => void; onSend: () => void }) {
   return (
@@ -18,7 +18,7 @@ export function SingleSelect({ q, onAnswer }: { q: Extract<Question, { kind: "si
   return (
     <Bottom>
       <CardList>
-        {q.options.map((o) => <OptionCard key={o.label} label={o.label} selected={false} control="none" onClick={() => onAnswer(o.label)} />)}
+        {q.options.map((o) => <OptionCard key={o.label} label={o.label} emoji={o.emoji} selected={false} control="none" onClick={() => onAnswer(o.label)} />)}
         {q.custom && <AnswerField value={custom} onChange={setCustom} onSend={send} />}
       </CardList>
       <div className="h-4" />
@@ -26,17 +26,17 @@ export function SingleSelect({ q, onAnswer }: { q: Extract<Question, { kind: "si
   );
 }
 
+/** niche-list is single-select: tap an option to advance. The custom row submits inline (Send / Enter). */
 export function NicheList({ q, onAnswer }: { q: Extract<Question, { kind: "nicheList" }>; onAnswer: (v: string) => void }) {
-  const [sel, setSel] = useState<string | null>(null);
   const [custom, setCustom] = useState("");
-  const val = custom.trim() || sel;
+  const send = () => custom.trim() && onAnswer(custom.trim());
   return (
     <Bottom>
       <CardList>
-        {q.options.map((o) => <OptionCard key={o.label} label={o.label} selected={sel === o.label && !custom} onClick={() => { setSel(o.label); setCustom(""); }} />)}
-        {q.custom && <AnswerField value={custom} onChange={(v) => { setCustom(v); setSel(null); }} onSend={() => val && onAnswer(val)} />}
+        {q.options.map((o) => <OptionCard key={o.label} label={o.label} emoji={o.emoji} selected={false} control="none" onClick={() => onAnswer(o.label)} />)}
+        {q.custom && <AnswerField value={custom} onChange={setCustom} onSend={send} />}
       </CardList>
-      <div className="px-4 pb-4 pt-2"><PrimaryButton disabled={!val} onClick={() => val && onAnswer(val)}>Confirm</PrimaryButton></div>
+      <div className="h-4" />
     </Bottom>
   );
 }

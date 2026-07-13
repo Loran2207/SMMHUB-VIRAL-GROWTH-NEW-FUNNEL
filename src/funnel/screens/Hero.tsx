@@ -30,7 +30,7 @@ export function Hero({ onNext }: { onNext: () => void }) {
           <div className="mt-4">
             <div className="mb-1.5 text-center font-ui text-[12px] font-semibold">65%</div>
             <div className="h-[16px] w-full overflow-hidden rounded-full bg-[#272741]/70">
-              <div className="h-full w-[65%] rounded-full bg-gradient-to-r from-[#7a5cff]/10 to-[#8666ff] shadow-[0_0_12px_2px_rgba(134,102,255,0.6)]" />
+              <div className="h-full w-[65%] rounded-full bg-[#8666ff] shadow-[0_0_12px_2px_rgba(134,102,255,0.6)]" />
             </div>
             <div className="mt-2.5 flex items-center justify-center gap-2 font-ui text-[14px] font-medium">
               <span className="size-4 animate-spin rounded-full border-2 border-white/25 border-t-white" /> Loading the quiz...
