@@ -10,6 +10,22 @@ export function FeaturedIcon({ children }: { children: ReactNode }) {
   return <span className="grid size-[28px] shrink-0 place-items-center rounded-[8px] border border-[#ebebee] bg-white text-ink-soft shadow-tile">{children}</span>;
 }
 
+/** 82x1.5 gradient rule that rides the pill card's top border (Figma 45573:6620). */
+function PillUnderline({ id }: { id: string }) {
+  return (
+    <svg width="82" height="1.5" viewBox="0 0 82 1.5" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden focusable="false">
+      <defs>
+        <linearGradient id={id} x1="0" y1="0.75" x2="82" y2="0.75" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#EAECF0" />
+          <stop offset="0.5" stopColor="#6151FC" />
+          <stop offset="1" stopColor="#EAECF0" />
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="82" height="1.5" fill={`url(#${id})`} />
+    </svg>
+  );
+}
+
 export function TopCard({ cols }: { cols: { icon: ReactNode; label: string; value: string; emoji?: string }[] }) {
   return (
     <div className="px-4 pt-6">
@@ -32,14 +48,15 @@ export function TopCard({ cols }: { cols: { icon: ReactNode; label: string; valu
             </div>
           ))}
         </div>
-        {/* Accent underline. Figma (45573:6620) draws an 82x1 line at the pill's top edge, centred under
-            each icon, stroked with a fade #eaecf0 -> #6151fc -> #eaecf0. Flattened to solid accent and
-            rendered as real divs: gradients and pseudo-elements do not survive a static DOM capture.
-            top-[35px] = icon row (26) + gap (8) + 1px, so it rides the card's top border. */}
+        {/* Accent underline. Figma (45573:6620) draws an 82x1 line 1px below the pill's top edge, centred
+            under each icon, stroked with a fade #eaecf0 -> #6151fc -> #eaecf0. Drawn as an inline SVG
+            linearGradient (SVG gradients survive the static capture; CSS gradients render as a grey box)
+            and positioned absolutely so it hangs on the card's top border without pushing layout.
+            top-[35px] = icon row (26) + gap (8) + 1px. */}
         <div className="pointer-events-none absolute inset-x-0 top-[35px] flex">
           {cols.map((_, i) => (
             <div key={i} className="flex flex-1 justify-center">
-              <span className="h-px w-[82px] max-w-[82%] bg-accent" />
+              <PillUnderline id={`pill-underline-${i}`} />
             </div>
           ))}
         </div>

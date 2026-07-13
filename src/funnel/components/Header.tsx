@@ -37,7 +37,11 @@ export function Header({ title, progress, onBack, canBack = true }: {
 function Avatar() {
   return (
     <div className="relative size-9 shrink-0">
-      <div className="size-9 rounded-full bg-[#ebebee] bg-cover" style={{ backgroundImage: "url(/img/avatar.png)", backgroundSize: "165%", backgroundPosition: "50% 14%" }} />
+      {/* Figma draws the photo at 41.2x45.3 offset (-4.18, +1.33) inside a 32px circle. Scaled to our 36px circle. */}
+      <div
+        className="size-9 rounded-full bg-[#ebebee] bg-no-repeat"
+        style={{ backgroundImage: "url(/img/avatar.png)", backgroundSize: "46.3px 51px", backgroundPosition: "-4.7px 1.5px" }}
+      />
       <span className="absolute bottom-0 right-0 size-[9px] rounded-full border-2 border-[#fafafb] bg-good" />
     </div>
   );

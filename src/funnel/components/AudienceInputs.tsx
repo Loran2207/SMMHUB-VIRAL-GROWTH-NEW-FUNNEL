@@ -16,32 +16,37 @@ export function Gender({ q, onAnswer }: { q: Extract<Question, { kind: "gender" 
   );
 }
 
-const AGE_MIN = 13;
+const AGE_MIN = 18;
 const AGE_TOP = "65+";
 const rank = (v: string) => (v === AGE_TOP ? 65 : Number(v));
 const range = (a: number, b: number) => Array.from({ length: b - a + 1 }, (_, i) => String(a + i));
 const FROM_OPTIONS = range(AGE_MIN, 65);
 const TO_OPTIONS = [...range(AGE_MIN + 1, 64), AGE_TOP];
 
-/** Native select in a card shell. The chevron is a real inline SVG element, never a pseudo-element. */
+/**
+ * Native select in a card shell. The selected value is painted by the browser and is invisible to a
+ * static DOM capture, so it is mirrored into a real <span>; the select itself is laid transparently
+ * over the whole card and keeps the interaction. The chevron is a real inline SVG, never a pseudo-element.
+ */
 function AgeDropdown({ label, value, options, onChange }: {
   label: string; value: string; options: string[]; onChange: (v: string) => void;
 }) {
   return (
     <div className="flex-1">
       <span className="mb-2 block font-ui text-[13px] font-semibold text-ink-soft">{label}</span>
-      <div className="relative">
+      <div className="relative h-[56px] w-full rounded-[16px] border border-[#eceef3] bg-white shadow-card transition-colors focus-within:border-accent">
+        <span className="pointer-events-none absolute inset-y-0 left-[18px] flex items-center font-ui text-[16px] font-bold text-ink">{value}</span>
+        <span aria-hidden className="pointer-events-none absolute inset-y-0 right-[16px] grid place-items-center text-ink-soft">
+          <ChevronDown size={18} strokeWidth={2.5} />
+        </span>
         <select
           value={value}
           aria-label={`Age ${label.toLowerCase()}`}
           onChange={(e) => onChange(e.target.value)}
-          className="h-[56px] w-full appearance-none rounded-[16px] border border-[#eceef3] bg-white pl-[18px] pr-[44px] font-ui text-[16px] font-bold text-ink shadow-card outline-none transition-colors focus:border-accent"
+          className="absolute inset-0 size-full cursor-pointer appearance-none rounded-[16px] border-0 bg-transparent pl-[18px] pr-[44px] font-ui text-[16px] font-bold opacity-0 outline-none"
         >
           {options.map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
-        <span aria-hidden className="pointer-events-none absolute inset-y-0 right-[16px] grid place-items-center text-ink-soft">
-          <ChevronDown size={18} strokeWidth={2.5} />
-        </span>
       </div>
     </div>
   );
