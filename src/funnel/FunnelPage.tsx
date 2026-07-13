@@ -9,15 +9,19 @@ import { SummaryScreen } from "@/funnel/components/SummaryScreen";
 import { Hero } from "@/funnel/screens/Hero";
 import { Welcome1, Welcome2, LoggedIn } from "@/funnel/screens/Welcome";
 import { Today } from "@/funnel/screens/Today";
+import { Checkout } from "@/funnel/screens/Checkout";
+import { Paywall } from "@/funnel/screens/Paywall";
 import { useFunnel } from "@/funnel/useFunnel";
 import { FLOW } from "@/funnel/flow";
 import type { Answers, ScreenKind } from "@/funnel/flow/types";
 
-function ScreenView({ screen, onNext, hold }: { screen: ScreenKind; onNext: () => void; hold?: boolean }) {
+function ScreenView({ screen, onNext, hold, answers }: { screen: ScreenKind; onNext: () => void; hold?: boolean; answers: Answers }) {
   if (screen === "hero") return <Hero onNext={onNext} hold={hold} />;
   if (screen === "welcome1") return <Welcome1 onNext={onNext} />;
   if (screen === "welcome2") return <Welcome2 onNext={onNext} />;
   if (screen === "today") return <Today onNext={onNext} />;
+  if (screen === "checkout") return <Checkout onNext={onNext} />;
+  if (screen === "paywall") return <Paywall onNext={onNext} email={answers.email} />;
   return <LoggedIn onNext={onNext} />;
 }
 
@@ -31,7 +35,7 @@ export function FunnelPage({ initial, instant, keyboard }: { initial?: Answers; 
   const active = f.active;
 
   if (f.done) return <LoggedIn onNext={() => { window.location.href = "/"; }} />;
-  if (active?.t === "screen") return <ScreenView screen={active.screen} onNext={() => f.answer(active.id, "done")} hold={instant} />;
+  if (active?.t === "screen") return <ScreenView screen={active.screen} onNext={() => f.answer(active.id, "done")} hold={instant} answers={f.answers} />;
 
   return (
     <PhoneFrame keyboard={keyboard}>

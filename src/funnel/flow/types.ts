@@ -1,5 +1,5 @@
 export type StepKey = "niche" | "audience" | "goals" | "plan";
-export type ScreenKind = "hero" | "welcome1" | "welcome2" | "today" | "loggedin";
+export type ScreenKind = "hero" | "welcome1" | "welcome2" | "today" | "checkout" | "paywall" | "loggedin";
 
 export const STEP_TITLE: Record<StepKey, string> = {
   niche: "Step 1: Niche",
