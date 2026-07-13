@@ -4,7 +4,6 @@ import { BrowserChrome } from "@/funnel/components/BrowserChrome";
 import {
   CalendarLines, RefreshCw, StatRule, BookOpen, Headphones, MessageCircle,
   StepUser, StepUsers, StepBullseye, StarSharp, Sparkle,
-  TabToday, TabTemplates, TabAiApps, TabAcademy,
 } from "@/funnel/screens/icons";
 
 /**
@@ -15,8 +14,13 @@ import {
  * order and block heights stay identical to Figma:
  *   avatar row 56 | title 139 | stats 102 | also-included 163 | white sheet 768.
  *
- * The Start button and the app tab bar are pinned below the scroll area: the original is a 1287px
- * scrolling screen, and in a ~682px browser viewport the CTA still has to be reachable.
+ * The Start button is pinned below the scroll area: the original is a 1287px scrolling screen, and
+ * in a ~682px browser viewport the CTA still has to be reachable.
+ *
+ * The mobile app's bottom tab bar (Today / Templates / AI Apps / Academy) and the header avatar are
+ * both dropped: they are native-app chrome and have no place in a web funnel that already carries
+ * real Safari chrome. The 56px header row stays - the light rays behind the title are positioned
+ * against it, and it now reads as the screen's top padding.
  *
  * Baked Figma exports (photographic or too intricate to redraw), each placed by its render bounds
  * because Figma exports bleed past the node box wherever a node has a shadow or glow:
@@ -24,7 +28,6 @@ import {
  *   /img/today-pill.png      45573:5568  the 7.4k / 36k pink pill
  *   /img/today-woman2.png    45573:5623  the woman beside "Also included"
  *   /img/today-calendar.png  45573:5633  WEEK 1 / WEEK 2 preview + the man + the 99k badges
- *   /img/today-avatar2.png   45573:5807  header avatar
  * Everything else is real DOM: solid fills and inline <svg>, so the Figma capture keeps it.
  */
 
@@ -33,13 +36,6 @@ const STEPS = [
   { lead: "Step 2: ", name: "Target Audience", time: "2 min", sub: "Understand who your content is for" },
   { lead: "Step 3: ", name: "Goals", time: "1 min", sub: "Define clear goals for your journey" },
   { lead: "Step 4: ", name: "Growth Content Plan", time: "", sub: "Unlock your hyper-personalized plan" },
-];
-
-const TABS = [
-  { label: "Today", Icon: TabToday, active: true },
-  { label: "Templates", Icon: TabTemplates, active: false },
-  { label: "AI Apps", Icon: TabAiApps, active: false },
-  { label: "Academy", Icon: TabAcademy, active: false },
 ];
 
 export function Today({ onNext }: { onNext: () => void }) {
@@ -53,7 +49,7 @@ export function Today({ onNext }: { onNext: () => void }) {
               alt=""
               aria-hidden
               draggable={false}
-              className="pointer-events-none absolute left-0 top-0 block h-[287px] w-[390px] select-none"
+              className="pointer-events-none absolute inset-x-0 top-0 block h-[287px] w-full select-none"
             />
             <div className="relative">
               <Head />
@@ -73,25 +69,6 @@ export function Today({ onNext }: { onNext: () => void }) {
             Start
           </button>
         </div>
-
-        <div className="flex shrink-0 items-start border-t border-[#e6e9ee] bg-white pt-[6px]">
-          {TABS.map(({ label, Icon, active }) => (
-            <div key={label} className="flex flex-1 flex-col items-center">
-              <span className="flex h-[28px] w-[48px] items-center justify-center">
-                <Icon className="size-[22px]" />
-              </span>
-              <span
-                className={
-                  active
-                    ? "font-ui text-[10px] font-bold leading-[16px] tracking-[-0.24px] text-ink"
-                    : "font-ui text-[10px] font-semibold leading-[16px] tracking-[-0.24px] text-[rgba(97,101,123,0.7)]"
-                }
-              >
-                {label}
-              </span>
-            </div>
-          ))}
-        </div>
       </BrowserChrome>
     </PhoneFrame>
   );
@@ -101,9 +78,9 @@ export function Today({ onNext }: { onNext: () => void }) {
 function Head() {
   return (
     <>
-      <div className="flex h-[56px] items-center px-[16px]">
-        <img src="/img/today-avatar2.png" alt="" draggable={false} className="size-[32px] shrink-0 select-none rounded-full" />
-      </div>
+      {/* The header row keeps its Figma height - the light rays are placed against it - but the app's
+          profile avatar is gone: it is native-app chrome, and a web funnel has no account behind it. */}
+      <div className="h-[56px]" />
 
       <div className="flex h-[139px] flex-col items-center gap-[8px] px-[70px]">
         <div className="flex items-start gap-[4px] whitespace-nowrap text-[12px]">
@@ -185,7 +162,7 @@ function AlsoIncluded() {
           <Incl icon={<MessageCircle className="size-[22px] shrink-0" />} label="100+ ready-to-use prompts" />
         </div>
       </div>
-      <div className="relative h-[189px] w-[125px] shrink-0 overflow-hidden">
+      <div className="relative ml-auto h-[189px] w-[125px] shrink-0 overflow-hidden">
         <img src="/img/today-woman2.png" alt="" draggable={false} className="absolute inset-0 block size-full select-none" />
       </div>
     </div>
@@ -217,13 +194,13 @@ function Sheet() {
         </div>
 
         {/* WEEK 1 / WEEK 2 preview. The export bleeds 14.7px above the node box (badge glows). */}
-        <div className="relative h-[196px] w-[390px] overflow-hidden">
+        <div className="relative h-[196px] w-full overflow-hidden">
           <img
             src="/img/today-calendar.png"
             alt=""
             draggable={false}
-            className="absolute left-0 block max-w-none select-none"
-            style={{ top: "-14.7px", width: "390px", height: "220.11px" }}
+            className="absolute inset-x-0 block w-full select-none"
+            style={{ top: "-14.7px", height: "220.11px" }}
           />
         </div>
       </div>

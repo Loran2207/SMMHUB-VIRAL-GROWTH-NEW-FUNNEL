@@ -30,17 +30,19 @@ export function Hero({ onNext, hold }: { onNext: () => void; hold?: boolean }) {
         <div onClick={onNext} className="relative h-full cursor-pointer overflow-hidden bg-[#030303] text-white">
           {/*
            * Glow + Day 1 / Day 28 phones. Figma puts this at y=206, 390x508, inside a 714px content
-           * frame. A browser content area is 682px (870 viewport - 109 top chrome - 79 bottom nav),
-           * so the box is 480px tall instead of 508: that keeps the illustration pinned to its Figma
-           * top edge and lands the phones exactly on top of the legal footer, as in the original.
-           * The extra 32px would otherwise have to come out of the gap under "Loading the quiz...".
+           * frame; a browser content area is only 682px (870 viewport - 109 top chrome - 79 bottom
+           * nav), so it never fit at full size. The legal block is now two lines instead of one, so
+           * the box is trimmed again (444px tall, raised to y=196) to buy the text ~30px of clear
+           * air: the artwork's lowest ink - the curved arrow - sits at 86% of the image height, i.e.
+           * y=196+0.86*444=579, and the legal block starts around y=608. The top edge may ride under
+           * the progress bar and the loading row: that area of the export is pure glow, as in Figma.
            */}
           <img
             src="/img/hero-illo.png"
             alt=""
             aria-hidden
             draggable={false}
-            className="pointer-events-none absolute left-0 top-[206px] block h-[480px] w-[390px] select-none"
+            className="pointer-events-none absolute inset-x-0 top-[196px] block h-[444px] w-full select-none"
           />
 
           {/* SMMHUB wordmark - Figma y=16, Gilroy ExtraBold 16. */}
@@ -75,10 +77,21 @@ export function Hero({ onNext, hold }: { onNext: () => void; hold?: boolean }) {
             <span className="font-ui text-[14px] font-medium leading-[1.4]">Loading the quiz...</span>
           </div>
 
-          {/* Legal footer - Figma y=658..694, i.e. 20px off the bottom of the content area. */}
-          <p className="absolute bottom-[20px] left-1/2 w-[304px] -translate-x-1/2 text-center font-ui text-[11px] font-normal leading-[1.6] tracking-[-0.22px] text-white/90">
-            By continuing, you agree with <u>Terms and Conditions</u>, <u>Privacy Policy</u>, <u>Subscription Terms</u>
-          </p>
+          {/*
+           * Legal footer. Arkadiy's review adds the illustrative-purposes sentence above the terms
+           * line, which doubles the block from two rendered lines to four. To keep it legible and
+           * clear of the illustration it is widened (304 -> 358) and stepped down to 10px/1.5 - the
+           * disclaimer sits a shade dimmer than the terms line, so the block reads as one deliberate
+           * footer rather than a wall of grey text.
+           */}
+          <div className="absolute inset-x-0 bottom-[14px] px-[16px]">
+            <p className="mx-auto w-full max-w-[358px] text-center font-ui text-[10px] font-normal leading-[1.5] tracking-[-0.2px] text-white/70">
+              Image above is for illustrative purposes only and does not guarantee results.
+            </p>
+            <p className="mx-auto mt-[4px] w-full max-w-[358px] text-center font-ui text-[10px] font-normal leading-[1.5] tracking-[-0.2px] text-white/90">
+              By continuing, you agree with <u>Terms and Conditions</u>, <u>Privacy Policy</u>, <u>Subscription Terms</u>
+            </p>
+          </div>
         </div>
       </BrowserChrome>
     </PhoneFrame>

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { cn } from "@/lib/cn";
 import { PhoneFrame } from "@/funnel/components/PhoneFrame";
 import { BrowserChrome } from "@/funnel/components/BrowserChrome";
 import { WelcomeSwoosh, WelcomeScrim } from "@/funnel/screens/icons";
@@ -43,11 +44,23 @@ function WelcomeHead() {
   );
 }
 
-/** Figma "Coach Text Container": rgba(30,16,11,0.64), radius 16, 16/12 padding, Gilroy 16/1.5. */
-function CaptionCard({ children }: { children: ReactNode }) {
+/**
+ * Figma "Coach Text Container": rgba(30,16,11,0.64), radius 16, 16/12 padding, Gilroy 16/1.5.
+ *
+ * `tight` shaves 0.4px off the tracking. It looks like nothing on screen and it is load-bearing for
+ * the Figma capture: Figma has no Gilroy Medium, so it substitutes Montserrat, which is ~13% wider.
+ * A caption that is one line in the browser is captured as a hug-width text node, and Figma then
+ * re-measures that node with the substituted font - the second caption grew from 306px to 347px,
+ * overflowed the card's 326px content box and had "plan." clipped off its right edge. The tracking
+ * pulls the substituted width back under the box (~331px) so the sentence stays whole, on one line,
+ * as in the original. Do not widen the cards to fix this instead: past ~345px the first caption
+ * wraps to two lines in Gilroy but still needs three in Montserrat, and the capture clips it
+ * vertically instead.
+ */
+function CaptionCard({ children, tight }: { children: ReactNode; tight?: boolean }) {
   return (
     <div className="flex w-full items-center justify-center rounded-[16px] bg-[rgba(30,16,11,0.64)] px-[16px] py-[12px] backdrop-blur-[4px]">
-      <p className="flex-1 font-brand text-[16px] font-medium leading-[1.5] text-white/90">{children}</p>
+      <p className={cn("flex-1 font-brand text-[16px] font-medium leading-[1.5] text-white/90", tight && "tracking-[-0.4px]")}>{children}</p>
     </div>
   );
 }
@@ -84,7 +97,7 @@ export function Welcome2({ onNext }: { onNext: () => void }) {
         <div className="flex w-full flex-col items-center">
           <div className="flex w-full flex-col gap-[8px] px-[16px]">
             <CaptionCard>{SANDY}</CaptionCard>
-            <CaptionCard>
+            <CaptionCard tight>
               Let&apos;s build your <b className="font-bold text-white">personalized growth plan.</b>
             </CaptionCard>
           </div>
