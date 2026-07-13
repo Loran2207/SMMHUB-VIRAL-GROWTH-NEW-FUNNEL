@@ -22,7 +22,7 @@ export function PrimaryButton({ children, onClick, disabled }: { children: React
       disabled={disabled}
       className={cn(
         "h-[56px] w-full rounded-[16px] font-ui text-[16px] font-bold text-white transition-all",
-        disabled ? "bg-[#c7c9d6]" : "bg-primary shadow-[0_10px_22px_-8px_rgba(45,50,81,0.5)] active:scale-[0.99]",
+        disabled ? "bg-[#c7c9d6]" : "bg-primary shadow-cta active:scale-[0.99]",
       )}
     >
       {children}

@@ -64,7 +64,7 @@ export function Today({ onNext }: { onNext: () => void }) {
           <button
             type="button"
             onClick={onNext}
-            className="h-[56px] w-full rounded-[16px] bg-primary font-ui text-[16px] font-bold text-white shadow-[0_8px_12px_rgba(0,0,0,0.1)] active:scale-[0.99]"
+            className="h-[56px] w-full rounded-[16px] bg-primary font-ui text-[16px] font-bold text-white shadow-cta active:scale-[0.99]"
           >
             Start
           </button>
