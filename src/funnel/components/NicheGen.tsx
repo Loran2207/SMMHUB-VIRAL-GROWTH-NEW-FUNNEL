@@ -9,9 +9,18 @@ const NICHES = [
   { title: "Growth Mindset For Marketers", desc: "Create content on personal growth, habits, and confidence tailored specifically to marketers and solo freelancers" },
 ];
 
+const MAX_REGEN = 3;
+
 /** niche-gen is single-select: tap one card to select it, then Confirm. No checkbox - that would read as multi-select. */
 export function NicheGen({ onAnswer }: { onAnswer: (v: string) => void }) {
   const [sel, setSel] = useState<number | null>(null);
+  const [regen, setRegen] = useState(0);
+  const exhausted = regen >= MAX_REGEN;
+  const regenerate = () => {
+    if (exhausted) return;
+    setRegen(regen + 1);
+    setSel(null);
+  };
   return (
     <Bottom>
       <CardList>
@@ -22,9 +31,14 @@ export function NicheGen({ onAnswer }: { onAnswer: (v: string) => void }) {
           </button>
         ))}
       </CardList>
-      <div className="flex items-stretch gap-3 px-4 pb-4 pt-2">
-        <button type="button" onClick={() => setSel(null)} aria-label="Regenerate" className="grid size-[56px] shrink-0 place-items-center rounded-[16px] border border-[#ececf1] bg-white text-ink shadow-card active:scale-95"><RefreshCw size={20} /></button>
-        <div className="flex-1"><PrimaryButton disabled={sel === null} onClick={() => sel !== null && onAnswer(NICHES[sel].title)}>Confirm</PrimaryButton></div>
+      <div className="px-4 pb-4 pt-2">
+        {exhausted && (
+          <p className="mb-3 px-1 text-center font-ui text-[12.5px] leading-snug text-ink-soft">No more niche ideas are available right now. You can change your niche later in the app.</p>
+        )}
+        <div className="flex items-stretch">
+          <button type="button" onClick={regenerate} disabled={exhausted} aria-label="Regenerate" className={cn("mr-3 grid size-[56px] shrink-0 place-items-center rounded-[16px] border transition-all", exhausted ? "border-[#ececf1] bg-[#f1f1f4] text-ink-faint" : "border-[#ececf1] bg-white text-ink shadow-card active:scale-95")}><RefreshCw size={20} /></button>
+          <div className="flex-1"><PrimaryButton disabled={sel === null} onClick={() => sel !== null && onAnswer(NICHES[sel].title)}>Confirm</PrimaryButton></div>
+        </div>
       </div>
     </Bottom>
   );

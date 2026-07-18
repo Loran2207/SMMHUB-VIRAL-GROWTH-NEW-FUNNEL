@@ -83,13 +83,37 @@ const LANGS: [string, string][] = [
   ["🇵🇹", "Portuguese"], ["🇮🇹", "Italian"], ["🇵🇱", "Polish"], ["🇸🇦", "Arabic"],
 ];
 
+/**
+ * One native <select> in a card shell (reviewer: a long list of buttons reads worse than a select).
+ * Same shell as AgeDropdown: the chosen value is painted into a real <span> because a native select's
+ * value is invisible to a static capture, and the transparent select is laid over the whole card.
+ */
 export function LanguageSelect({ onAnswer }: { onAnswer: (v: string) => void }) {
+  const [lang, setLang] = useState("");
+  const chosen = LANGS.find(([, name]) => name === lang);
+
   return (
     <Bottom>
-      <CardList>
-        {LANGS.map(([flag, name]) => <OptionCard key={name} label={`${flag}  ${name}`} selected={false} control="none" onClick={() => onAnswer(name)} />)}
-      </CardList>
-      <div className="h-4" />
+      <div className="px-4 pt-4">
+        <div className="relative h-[56px] w-full rounded-[16px] border border-[#eceef3] bg-white shadow-card transition-colors focus-within:border-accent">
+          <span className={cn("pointer-events-none absolute inset-y-0 left-[18px] flex items-center font-ui text-[16px]", chosen ? "font-bold text-ink" : "text-ink-faint")}>
+            {chosen ? `${chosen[0]}  ${chosen[1]}` : "Select a language"}
+          </span>
+          <span aria-hidden className="pointer-events-none absolute inset-y-0 right-[16px] grid place-items-center text-ink-soft">
+            <ChevronDown size={18} strokeWidth={2.5} />
+          </span>
+          <select
+            value={lang}
+            aria-label="Language"
+            onChange={(e) => setLang(e.target.value)}
+            className="absolute inset-0 size-full cursor-pointer appearance-none rounded-[16px] border-0 bg-transparent pl-[18px] pr-[44px] font-ui text-[16px] font-bold opacity-0 outline-none"
+          >
+            <option value="" disabled>Select a language</option>
+            {LANGS.map(([flag, name]) => <option key={name} value={name}>{`${flag}  ${name}`}</option>)}
+          </select>
+        </div>
+      </div>
+      <div className="px-4 pb-4 pt-6"><PrimaryButton disabled={!lang} onClick={() => onAnswer(lang)}>Next</PrimaryButton></div>
     </Bottom>
   );
 }
@@ -120,9 +144,10 @@ function ChoiceButton({ label, tone, selected, full, onClick }: {
  * "Yes" is picked (reviewer redesign). Shared by location, topics-include, topics-avoid and
  * unique-feature.
  *
- * q.example adds a "Do you have an example?" row above the buttons; picking it answers with
- * that label, which the flow branches on to post the examples reply. Custom yes/no labels are
- * long, so they stack full-width instead of sitting side by side.
+ * q.example adds a "Do you have an example?" button above the No/Yes row. It wears the same shell
+ * as the No/Yes buttons - white card, same border, shadow and radius, a small hint icon in a soft
+ * grey circle (mirroring No's red X and Yes' green check) - so the three actions read as one set.
+ * Picking it answers with that label, which the flow branches on to post the examples reply.
  */
 export function YesNoText({ q, onAnswer }: { q: Extract<Question, { kind: "yesNoText" }>; onAnswer: (v: string) => void }) {
   const [open, setOpen] = useState(false);
@@ -136,7 +161,20 @@ export function YesNoText({ q, onAnswer }: { q: Extract<Question, { kind: "yesNo
     <Bottom>
       {example && !open && (
         <div className="px-4 pt-3">
-          <OptionCard label={example} selected={false} control="none" onClick={() => onAnswer(example)} />
+          <button
+            type="button"
+            onClick={() => onAnswer(example)}
+            className="flex min-h-[60px] w-full items-center justify-center gap-2.5 rounded-[16px] border border-[#eceef3] bg-white px-4 py-3 font-ui text-[16px] font-bold text-ink shadow-card transition-all active:scale-[0.99]"
+          >
+            <span className="grid size-6 shrink-0 place-items-center rounded-full bg-[#eef0f4] text-ink-soft">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M9 18h6" />
+                <path d="M10 22h4" />
+                <path d="M15.1 14c.4-1 1-1.7 1.8-2.5 1-.9 1.6-2.2 1.6-3.6a6.5 6.5 0 0 0-13 0c0 1.4.6 2.7 1.6 3.6.8.8 1.4 1.5 1.8 2.5" />
+              </svg>
+            </span>
+            <span className="leading-snug">{example}</span>
+          </button>
         </div>
       )}
       <div className={cn("flex gap-3 px-4 pt-3", stacked && "flex-col")}>

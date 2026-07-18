@@ -7,6 +7,7 @@ function def(q: Question): string {
     case "nicheList":
     case "gender":
     case "multi": return q.options[0]?.label ?? "OK";
+    case "platforms": return q.options[0]?.label ?? "Instagram";
     case "yesno": return "Yes";
     case "text": return "My answer";
     case "nicheGen": return "AI-Powered Marketing Launches";

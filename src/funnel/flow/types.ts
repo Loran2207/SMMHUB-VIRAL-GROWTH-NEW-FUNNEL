@@ -19,6 +19,8 @@ export type Question =
   | { kind: "single"; options: Opt[]; custom?: boolean }
   | { kind: "yesno" }
   | { kind: "multi"; options: Opt[]; custom?: boolean; cta?: string }
+  /** Platform picker: brand-icon checkbox cards plus a free-text "Other" row. */
+  | { kind: "platforms"; options: { label: string; icon: "instagram" | "youtube" | "tiktok" }[]; other?: boolean; cta?: string }
   | { kind: "text"; placeholder: string; cta?: string }
   | { kind: "nicheList"; options: Opt[]; custom?: boolean }
   | { kind: "nicheGen" }

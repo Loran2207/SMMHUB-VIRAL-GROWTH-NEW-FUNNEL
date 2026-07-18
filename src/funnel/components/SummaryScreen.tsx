@@ -90,7 +90,14 @@ function Section({ icon, title, items, art }: { icon: ReactNode; title: string; 
       <FeaturedIcon>{icon}</FeaturedIcon>
       <div className="flex flex-1 flex-col gap-1.5">
         <p className="font-ui text-[14px] font-semibold text-ink">{title}</p>
-        {items.map((t, i) => <p key={i} className="font-ui text-[12px] font-medium leading-[1.5] text-ink-soft">{t}</p>)}
+        {items.map((t, i) => (
+          <div key={i} className="flex items-start">
+            <span className="mr-2 flex h-[18px] w-[4px] shrink-0 items-center">
+              <span className="size-[4px] rounded-full bg-ink-soft" />
+            </span>
+            <p className="font-ui text-[12px] font-medium leading-[1.5] text-ink-soft">{t}</p>
+          </div>
+        ))}
       </div>
       {/* Stubbed-toe line art, cropped from the Figma original at 4x. */}
       {art && <img src={art} alt="" aria-hidden className="mt-0.5 h-[107px] w-auto shrink-0 select-none" />}

@@ -30,16 +30,16 @@ export const STEP1_NO: Beat[] = [
   { t: "bot", when: no, text: "We're sure you already have something valuable to offer your followers - and we can prove it." },
   { t: "ask", when: no, id: "no-please-do", q: { kind: "continue", label: "Please do!" } },
   { t: "bot", when: no, text: "Do you have any skills, experiences or hobbies that others might find interesting, helpful or valuable?" },
-  { t: "ask", when: no, id: "skills", q: { kind: "text", placeholder: "Your answer..." } },
+  { t: "ask", when: no, id: "skills", q: { kind: "text", placeholder: "Type here..." } },
   { t: "bot", when: no, text: "Got it!" },
   { t: "bot", when: no, text: "What topics do you love learning about?" },
-  { t: "ask", when: no, id: "topics", q: { kind: "text", placeholder: "Your answer..." } },
+  { t: "ask", when: no, id: "topics", q: { kind: "text", placeholder: "Type here..." } },
   { t: "bot", when: no, text: "Okay, noted!" },
   { t: "bot", when: no, text: "Who do you love helping or chatting with the most?" },
-  { t: "ask", when: no, id: "helping", q: { kind: "text", placeholder: "Your answer..." } },
+  { t: "ask", when: no, id: "helping", q: { kind: "text", placeholder: "Type here..." } },
   { t: "bot", when: no, text: "Aha, got it!" },
   { t: "bot", when: no, text: "Is there anything people usually ask you for advice on?" },
-  { t: "ask", when: no, id: "advice", q: { kind: "text", placeholder: "Your answer..." } },
+  { t: "ask", when: no, id: "advice", q: { kind: "text", placeholder: "Type here..." } },
   { t: "bot", when: no, text: "These 3 niches sound just like you! Select one or regenerate." },
   { t: "bot", when: no, text: "Don't worry - you can update your niche anytime in the profile settings." },
   { t: "ask", when: no, id: "niche-gen", q: { kind: "nicheGen" } },
@@ -71,7 +71,6 @@ const UNIQUE_EXAMPLES: Bullet[] = [
 ];
 
 const wantsExample = (a: Answers) => a["unique-feature"] === EXAMPLE_ASK;
-const S = (label: string) => ({ label });
 
 export const STEP1_END: Beat[] = [
   { t: "bot", text: "Good job!" },
@@ -80,19 +79,23 @@ export const STEP1_END: Beat[] = [
   { t: "bot", text: "Your Creator DNA is shaping up nicely - but hold on, we're not done yet!", card: { kind: "dna", done: { who: true, what: true } } },
   { t: "ask", id: "dna-next", q: { kind: "continue", label: "Next piece, please!" } },
   { t: "bot", text: "Which platforms do you plan to post on?" },
-  { t: "ask", id: "platforms", q: { kind: "multi", cta: "Next", options: [S("Instagram"), S("YouTube"), S("TikTok"), S("Other")] } },
+  { t: "ask", id: "platforms", q: { kind: "platforms", cta: "Next", other: true, options: [
+      { label: "Instagram", icon: "instagram" },
+      { label: "YouTube", icon: "youtube" },
+      { label: "TikTok", icon: "tiktok" },
+    ] } },
   { t: "bot", text: "Understood, moving on!" },
   { t: "bot", text: "Are there any topics, trends or interests you'd like to include in your content?" },
-  { t: "ask", id: "topics-include", q: { kind: "yesNoText", placeholder: "Enter text..." } },
+  { t: "ask", id: "topics-include", q: { kind: "yesNoText", placeholder: "Type here..." } },
   { t: "bot", text: "Got you!" },
   { t: "bot", text: "Are there any topics you'd like to avoid in your content?" },
-  { t: "ask", id: "topics-avoid", q: { kind: "yesNoText", placeholder: "Enter text..." } },
+  { t: "ask", id: "topics-avoid", q: { kind: "yesNoText", placeholder: "Type here..." } },
   { t: "bot", text: "Almost there, creator! 🔜" },
   { t: "bot", text: "Is there anything that makes you or your brand stand out?" },
-  { t: "ask", id: "unique-feature", q: { kind: "yesNoText", placeholder: "Enter text...", example: EXAMPLE_ASK } },
+  { t: "ask", id: "unique-feature", q: { kind: "yesNoText", placeholder: "Type here...", example: EXAMPLE_ASK } },
   { t: "bot", when: wantsExample, text: "Not sure yet? Totally okay. Your \"unique thing\" can be simple, like:", list: UNIQUE_EXAMPLES },
   { t: "bot", when: wantsExample, text: "So, how do you think, is there anything that makes you or your brand stand out?" },
-  { t: "ask", when: wantsExample, id: "unique-answer", q: { kind: "yesNoText", placeholder: "Enter text...", no: "Not yet - I'm still discovering my unique angle", yes: "Yes - I have a clear \"thing\" that makes my content feel like me" } },
+  { t: "ask", when: wantsExample, id: "unique-answer", q: { kind: "yesNoText", placeholder: "Type here...", no: "Not yet - I'm still discovering my unique angle", yes: "Yes - I have a clear \"thing\" that makes my content feel like me" } },
   { t: "bot", text: "Boom! Your Creator DNA is ready! 🎉", card: { kind: "dna", done: { who: true, what: true, unique: true } } },
   { t: "summary", id: "dna-summary", kind: "dna", cta: "First Mission complete!" },
 ];

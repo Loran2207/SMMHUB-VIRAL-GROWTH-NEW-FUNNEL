@@ -5,7 +5,7 @@ import { Bottom, PrimaryButton } from "@/funnel/components/ui";
 import { SingleSelect, NicheList } from "@/funnel/components/SelectInputs";
 import { NicheGen } from "@/funnel/components/NicheGen";
 import { Gender, AgeSelect, LanguageSelect, YesNoText } from "@/funnel/components/AudienceInputs";
-import { EmailInput, OptIn, MultiSelect } from "@/funnel/components/ContactInputs";
+import { EmailInput, OptIn, MultiSelect, PlatformsSelect } from "@/funnel/components/ContactInputs";
 
 export function QuestionSheet({ q, onAnswer }: { q: Question; onAnswer: (v: string) => void }) {
   switch (q.kind) {
@@ -35,6 +35,8 @@ export function QuestionSheet({ q, onAnswer }: { q: Question; onAnswer: (v: stri
       return <OptIn q={q} onAnswer={onAnswer} />;
     case "multi":
       return <MultiSelect q={q} onAnswer={onAnswer} />;
+    case "platforms":
+      return <PlatformsSelect q={q} onAnswer={onAnswer} />;
     default:
       return null;
   }

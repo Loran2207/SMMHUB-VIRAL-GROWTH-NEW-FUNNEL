@@ -16,6 +16,6 @@ export const STEP4: Beat[] = [
   { t: "ask", id: "email", q: { kind: "email" } },
   { t: "bot", text: "Do you want to receive emails with proven tips to grow your audience and monetize your content?" },
   { t: "ask", id: "optin", q: { kind: "optin", yes: "Sure, I'm in", no: "I don't want to receive tips or updates" } },
-  { t: "bot", text: "Your answers will help shape your content ideas, scripts, and strategy around the audience you want to reach." },
+  { t: "bot", text: "Got it! Now let me tell you more about SMMHUB." },
   { t: "ask", id: "generate", q: { kind: "continue", label: "Continue" } },
 ];
