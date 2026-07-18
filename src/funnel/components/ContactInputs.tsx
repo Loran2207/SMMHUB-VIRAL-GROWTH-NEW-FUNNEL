@@ -59,9 +59,21 @@ export function MultiSelect({ q, onAnswer }: { q: Extract<Question, { kind: "mul
 // viewBoxes, so each img keeps a uniform 24x24 slot but is letterboxed via centered padding
 // to its true ratio (YouTube 16:11.25, TikTok 14.12:16) instead of being stretched square.
 const ICONS = {
-  instagram: <img src="/img/platform-instagram.svg" alt="" className="size-6 shrink-0 select-none" draggable={false} />,
-  youtube: <img src="/img/platform-youtube.svg" alt="" className="box-border size-6 shrink-0 select-none py-[3.5px]" draggable={false} />,
-  tiktok: <img src="/img/platform-tiktok.svg" alt="" className="box-border size-6 shrink-0 select-none px-[1.5px]" draggable={false} />,
+  instagram: (
+    <span className="block size-4 shrink-0 select-none">
+      <img src="/img/platform-instagram.svg" alt="" className="block size-4" draggable={false} />
+    </span>
+  ),
+  youtube: (
+    <span className="relative block size-4 shrink-0 select-none">
+      <img src="/img/platform-youtube.svg" alt="" className="absolute inset-x-0 top-1/2 block h-[11.25px] w-4 -translate-y-1/2" draggable={false} />
+    </span>
+  ),
+  tiktok: (
+    <span className="relative block size-4 shrink-0 select-none">
+      <img src="/img/platform-tiktok.svg" alt="" className="absolute left-[0.8px] top-0 block h-4 w-[14.124px]" draggable={false} />
+    </span>
+  ),
 };
 
 function CheckBox({ on }: { on: boolean }) {
@@ -74,15 +86,17 @@ function CheckBox({ on }: { on: boolean }) {
 
 export function PlatformsSelect({ q, onAnswer }: { q: Extract<Question, { kind: "platforms" }>; onAnswer: (v: string) => void }) {
   const [sel, setSel] = useState<string[]>([]);
+  const [customs, setCustoms] = useState<string[]>([]);
   const [other, setOther] = useState("");
   const toggle = (l: string) => setSel((s) => (s.includes(l) ? s.filter((x) => x !== l) : [...s, l]));
-  const otherOn = other.trim().length > 0;
-  const canNext = sel.length > 0 || otherOn;
-  const submit = () => {
-    const parts = [...sel];
-    if (otherOn) parts.push(other.trim());
-    onAnswer(parts.join(", "));
+  const otherReady = other.trim().length > 0;
+  const sendOther = () => {
+    const t = other.trim();
+    if (!t || customs.includes(t) || sel.includes(t)) return;
+    setCustoms((c) => [...c, t]);
+    setOther("");
   };
+  const chosen = [...sel, ...customs, ...(otherReady ? [other.trim()] : [])];
   return (
     <Bottom>
       <div className="px-4 pt-3">
@@ -94,13 +108,25 @@ export function PlatformsSelect({ q, onAnswer }: { q: Extract<Question, { kind: 
           </button>
         ))}
         {q.other && (
-          <div className="mb-3 flex w-full items-center rounded-[16px] border border-[#eceef3] bg-white px-[18px] py-[16px] shadow-card">
-            <input value={other} onChange={(e) => setOther(e.target.value)} placeholder="Other" className="min-w-0 flex-1 bg-transparent font-ui text-[15px] font-semibold text-ink outline-none placeholder:font-semibold placeholder:text-ink" />
-            <CheckBox on={otherOn} />
+          <div className="mb-3 flex w-full items-center gap-2 rounded-[16px] border border-[#eceef3] bg-white px-[18px] py-[15px] shadow-card transition-colors focus-within:border-accent">
+            <input value={other} onChange={(e) => setOther(e.target.value)} onKeyDown={(e) => e.key === "Enter" && sendOther()} placeholder="Add another platform" className="min-w-0 flex-1 bg-transparent font-ui text-[15px] font-semibold text-ink outline-none placeholder:font-medium placeholder:text-ink-faint" />
+            <button type="button" disabled={!otherReady} onClick={sendOther} className={cn("shrink-0 rounded-[10px] px-3.5 py-[7px] font-ui text-[14px] font-bold transition-colors", otherReady ? "bg-[#efedff] text-accent" : "bg-[#f1f1f4] text-ink-faint")}>Send</button>
+          </div>
+        )}
+        {customs.length > 0 && (
+          <div className="mb-1 flex flex-wrap gap-2">
+            {customs.map((c) => (
+              <span key={c} className="flex items-center gap-1.5 rounded-full bg-[#efedff] py-[7px] pl-3.5 pr-2 font-ui text-[13px] font-semibold text-accent">
+                {c}
+                <button type="button" aria-label={"Remove " + c} onClick={() => setCustoms((s) => s.filter((x) => x !== c))} className="grid size-[16px] place-items-center rounded-full">
+                  <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden><path d="M1.5 1.5L7.5 7.5M7.5 1.5L1.5 7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+                </button>
+              </span>
+            ))}
           </div>
         )}
       </div>
-      <div className="px-4 pb-4 pt-1"><PrimaryButton disabled={!canNext} onClick={submit}>{q.cta ?? "Next"}</PrimaryButton></div>
+      <div className="px-4 pb-4 pt-2"><PrimaryButton disabled={!chosen.length} onClick={() => onAnswer(chosen.join(", "))}>{q.cta ?? "Next"}</PrimaryButton></div>
     </Bottom>
   );
 }
