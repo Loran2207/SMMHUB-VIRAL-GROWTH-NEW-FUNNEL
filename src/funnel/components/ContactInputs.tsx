@@ -1,4 +1,7 @@
 import { useState } from "react";
+import igRaw from "@/funnel/icons/platform-instagram.svg?raw";
+import ytRaw from "@/funnel/icons/platform-youtube.svg?raw";
+import ttRaw from "@/funnel/icons/platform-tiktok.svg?raw";
 import { Check } from "lucide-react";
 import type { Question } from "@/funnel/flow/types";
 import { cn } from "@/lib/cn";
@@ -58,20 +61,21 @@ export function MultiSelect({ q, onAnswer }: { q: Extract<Question, { kind: "mul
 // Real brand logos (public/img). Source SVGs use preserveAspectRatio="none" with non-square
 // viewBoxes, so each img keeps a uniform 24x24 slot but is letterboxed via centered padding
 // to its true ratio (YouTube 16:11.25, TikTok 14.12:16) instead of being stretched square.
+/** Inline SVG (real <svg> in the DOM), not <img src>. The capture engine turns an <img src="*.svg">
+ *  into a rasterised image fill, but converts inline SVG into true Figma vector layers. The wrapper
+ *  span carries the icon's real aspect (Instagram 16x16, YouTube 16x11.25, TikTok 14.124x16) so the
+ *  preserveAspectRatio="none" SVGs are not stretched. */
+const svgBox = "[&>svg]:block [&>svg]:size-full";
 const ICONS = {
-  instagram: (
-    <span className="block size-4 shrink-0 select-none">
-      <img src="/img/platform-instagram.svg" alt="" className="block size-4" draggable={false} />
-    </span>
-  ),
+  instagram: <span className={cn("block size-4 shrink-0 select-none", svgBox)} dangerouslySetInnerHTML={{ __html: igRaw }} />,
   youtube: (
     <span className="relative block size-4 shrink-0 select-none">
-      <img src="/img/platform-youtube.svg" alt="" className="absolute inset-x-0 top-1/2 block h-[11.25px] w-4 -translate-y-1/2" draggable={false} />
+      <span className={cn("absolute inset-x-0 top-1/2 h-[11.25px] w-4 -translate-y-1/2", svgBox)} dangerouslySetInnerHTML={{ __html: ytRaw }} />
     </span>
   ),
   tiktok: (
     <span className="relative block size-4 shrink-0 select-none">
-      <img src="/img/platform-tiktok.svg" alt="" className="absolute left-[0.8px] top-0 block h-4 w-[14.124px]" draggable={false} />
+      <span className={cn("absolute left-[0.8px] top-0 h-4 w-[14.124px]", svgBox)} dangerouslySetInnerHTML={{ __html: ttRaw }} />
     </span>
   ),
 };
@@ -110,7 +114,7 @@ export function PlatformsSelect({ q, onAnswer }: { q: Extract<Question, { kind: 
         {q.other && (
           <div className="mb-3 flex w-full items-center gap-2 rounded-[16px] border border-[#eceef3] bg-white px-[18px] py-[15px] shadow-card transition-colors focus-within:border-accent">
             <input value={other} onChange={(e) => setOther(e.target.value)} onKeyDown={(e) => e.key === "Enter" && sendOther()} placeholder="Add another platform" className="min-w-0 flex-1 bg-transparent font-ui text-[15px] font-semibold text-ink outline-none placeholder:font-medium placeholder:text-ink-faint" />
-            <button type="button" disabled={!otherReady} onClick={sendOther} className={cn("shrink-0 rounded-[10px] px-3.5 py-[7px] font-ui text-[14px] font-bold transition-colors", otherReady ? "bg-[#efedff] text-accent" : "bg-[#f1f1f4] text-ink-faint")}>Send</button>
+            <button type="button" disabled={!otherReady} onClick={sendOther} className={cn("shrink-0 rounded-[10px] px-3.5 py-[7px] font-ui text-[14px] font-bold transition-colors", otherReady ? "bg-[#efedff] text-accent" : "bg-[#f1f1f4] text-ink-faint")}>Add</button>
           </div>
         )}
         {customs.length > 0 && (
