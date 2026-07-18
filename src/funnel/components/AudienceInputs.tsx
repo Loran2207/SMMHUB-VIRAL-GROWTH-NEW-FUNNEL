@@ -84,36 +84,69 @@ const LANGS: [string, string][] = [
 ];
 
 /**
- * One native <select> in a card shell (reviewer: a long list of buttons reads worse than a select).
- * Same shell as AgeDropdown: the chosen value is painted into a real <span> because a native select's
- * value is invisible to a static capture, and the transparent select is laid over the whole card.
+ * Language picker with a bottom-sheet selector. The trigger is a real <button> in the same 56px
+ * card shell as the age dropdowns (painted value span + inline chevron); tapping it opens a sheet -
+ * a real DOM overlay, not a native <select> whose open list the capture engine cannot see. The
+ * overlay is a dimmed backdrop (solid rgba, capture-safe) plus a white sheet pinned to the bottom
+ * with a grabber, a header and the language rows. Picking a row selects it and closes the sheet;
+ * Next answers with the plain name, no flag. The sheet is pinned with absolute inset-x-0 bottom-0
+ * (not a flex justify-end / transform, which a static capture can drop), and each row uses a real
+ * margin between flag and name (a flex gap can collapse in the capture).
  */
 export function LanguageSelect({ onAnswer }: { onAnswer: (v: string) => void }) {
   const [lang, setLang] = useState("");
+  const [open, setOpen] = useState(false);
   const chosen = LANGS.find(([, name]) => name === lang);
+  const pick = (name: string) => { setLang(name); setOpen(false); };
 
   return (
     <Bottom>
       <div className="px-4 pt-4">
-        <div className="relative h-[56px] w-full rounded-[16px] border border-[#eceef3] bg-white shadow-card transition-colors focus-within:border-accent">
-          <span className={cn("pointer-events-none absolute inset-y-0 left-[18px] flex items-center font-ui text-[16px]", chosen ? "font-bold text-ink" : "text-ink-faint")}>
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className={cn("relative flex h-[56px] w-full items-center rounded-[16px] border bg-white pl-[18px] pr-[44px] text-left shadow-card transition-colors", open ? "border-accent" : "border-[#eceef3]")}
+        >
+          <span className={cn("font-ui text-[16px]", chosen ? "font-bold text-ink" : "text-ink-faint")}>
             {chosen ? `${chosen[0]}  ${chosen[1]}` : "Select a language"}
           </span>
           <span aria-hidden className="pointer-events-none absolute inset-y-0 right-[16px] grid place-items-center text-ink-soft">
             <ChevronDown size={18} strokeWidth={2.5} />
           </span>
-          <select
-            value={lang}
-            aria-label="Language"
-            onChange={(e) => setLang(e.target.value)}
-            className="absolute inset-0 size-full cursor-pointer appearance-none rounded-[16px] border-0 bg-transparent pl-[18px] pr-[44px] font-ui text-[16px] font-bold opacity-0 outline-none"
-          >
-            <option value="" disabled>Select a language</option>
-            {LANGS.map(([flag, name]) => <option key={name} value={name}>{`${flag}  ${name}`}</option>)}
-          </select>
-        </div>
+        </button>
       </div>
       <div className="px-4 pb-4 pt-6"><PrimaryButton disabled={!lang} onClick={() => onAnswer(lang)}>Next</PrimaryButton></div>
+
+      {open && (
+        <div className="fixed inset-0 z-50">
+          <div aria-hidden onClick={() => setOpen(false)} className="absolute inset-0 bg-[rgba(2,8,45,0.45)]" />
+          <div className="pz-slide-in absolute inset-x-0 bottom-0 z-10 mx-auto w-full max-w-[402px] rounded-t-[20px] bg-white pb-2 shadow-sheet">
+            <div className="flex justify-center pb-1 pt-3">
+              <span className="block h-1 w-10 rounded-full bg-[#e5e6ea]" />
+            </div>
+            <div className="px-5 pb-2 pt-2">
+              <span className="font-ui text-[16px] font-bold text-ink">Select a language</span>
+            </div>
+            <div className="max-h-[58vh] overflow-y-auto pb-1">
+              {LANGS.map(([flag, name], i) => {
+                const on = name === lang;
+                return (
+                  <button
+                    key={name}
+                    type="button"
+                    onClick={() => pick(name)}
+                    className={cn("flex h-[54px] w-full items-center px-5 text-left", i > 0 && "border-t border-[#f0f1f4]")}
+                  >
+                    <span className="mr-3 text-[20px] leading-none">{flag}</span>
+                    <span className={cn("flex-1 font-ui text-[16px]", on ? "font-bold text-accent" : "font-semibold text-ink")}>{name}</span>
+                    {on && <Check size={18} strokeWidth={3} className="text-accent" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </Bottom>
   );
 }

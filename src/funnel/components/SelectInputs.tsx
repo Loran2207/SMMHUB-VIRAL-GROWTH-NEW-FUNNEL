@@ -13,17 +13,11 @@ function AnswerField({ value, onChange, onSend, placeholder = "Type here..." }: 
         disabled={!active}
         onClick={onSend}
         className={cn(
-          "ml-3 flex shrink-0 items-center font-ui text-[14px] transition-all",
-          active ? "font-bold text-accent active:scale-95" : "cursor-default font-semibold text-ink-faint",
+          "ml-3 shrink-0 rounded-[10px] px-3.5 py-[7px] font-ui text-[14px] transition-all",
+          active ? "bg-[#efedff] font-bold text-accent active:scale-95" : "cursor-default bg-[#f1f1f4] font-semibold text-ink-faint",
         )}
       >
         Send
-        {active && (
-          <svg className="ml-1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M4 12h15" />
-            <path d="M13 6l6 6-6 6" />
-          </svg>
-        )}
       </button>
     </div>
   );
@@ -36,7 +30,7 @@ export function SingleSelect({ q, onAnswer }: { q: Extract<Question, { kind: "si
     <Bottom>
       <CardList>
         {q.options.map((o) => <OptionCard key={o.label} label={o.label} emoji={o.emoji} selected={false} control="none" onClick={() => onAnswer(o.label)} />)}
-        {q.custom && <AnswerField value={custom} onChange={setCustom} onSend={send} placeholder="Type here..." />}
+        {q.custom && <AnswerField value={custom} onChange={setCustom} onSend={send} placeholder={q.customPlaceholder ?? "Type here..."} />}
       </CardList>
       <div className="h-4" />
     </Bottom>
@@ -51,7 +45,7 @@ export function NicheList({ q, onAnswer }: { q: Extract<Question, { kind: "niche
     <Bottom>
       <CardList>
         {q.options.map((o) => <OptionCard key={o.label} label={o.label} emoji={o.emoji} selected={false} control="none" onClick={() => onAnswer(o.label)} />)}
-        {q.custom && <AnswerField value={custom} onChange={setCustom} onSend={send} placeholder="Type here..." />}
+        {q.custom && <AnswerField value={custom} onChange={setCustom} onSend={send} placeholder={q.customPlaceholder ?? "Type here..."} />}
       </CardList>
       <div className="h-4" />
     </Bottom>

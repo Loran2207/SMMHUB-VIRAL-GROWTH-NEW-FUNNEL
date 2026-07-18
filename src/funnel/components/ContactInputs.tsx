@@ -55,40 +55,14 @@ export function MultiSelect({ q, onAnswer }: { q: Extract<Question, { kind: "mul
   );
 }
 
-const IgIcon = (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <defs>
-      <linearGradient id="ci-ig-grad" x1="2" y1="22" x2="22" y2="2" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#feda75" />
-        <stop offset="0.25" stopColor="#fa7e1e" />
-        <stop offset="0.5" stopColor="#d62976" />
-        <stop offset="0.75" stopColor="#962fbf" />
-        <stop offset="1" stopColor="#4f5bd5" />
-      </linearGradient>
-    </defs>
-    <rect x="1" y="1" width="22" height="22" rx="6.5" fill="url(#ci-ig-grad)" />
-    <circle cx="12" cy="12" r="4.8" fill="none" stroke="#fff" strokeWidth="2" />
-    <circle cx="17.4" cy="6.6" r="1.35" fill="#fff" />
-  </svg>
-);
-
-const YtIcon = (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <rect x="1" y="4.5" width="22" height="15" rx="4.6" fill="#FF0000" />
-    <path d="M10 8.4 L15.6 12 L10 15.6 Z" fill="#fff" />
-  </svg>
-);
-
-const TT_PATH = "M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z";
-const TtIcon = (
-  <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-    <path d={TT_PATH} fill="#25F4EE" transform="translate(-0.9,-0.7)" />
-    <path d={TT_PATH} fill="#FE2C55" transform="translate(0.9,0.7)" />
-    <path d={TT_PATH} fill="#010101" />
-  </svg>
-);
-
-const ICONS: Record<"instagram" | "youtube" | "tiktok", typeof IgIcon> = { instagram: IgIcon, youtube: YtIcon, tiktok: TtIcon };
+// Real brand logos (public/img). Source SVGs use preserveAspectRatio="none" with non-square
+// viewBoxes, so each img keeps a uniform 24x24 slot but is letterboxed via centered padding
+// to its true ratio (YouTube 16:11.25, TikTok 14.12:16) instead of being stretched square.
+const ICONS = {
+  instagram: <img src="/img/platform-instagram.svg" alt="" className="size-6 shrink-0 select-none" draggable={false} />,
+  youtube: <img src="/img/platform-youtube.svg" alt="" className="box-border size-6 shrink-0 select-none py-[3.5px]" draggable={false} />,
+  tiktok: <img src="/img/platform-tiktok.svg" alt="" className="box-border size-6 shrink-0 select-none px-[1.5px]" draggable={false} />,
+};
 
 function CheckBox({ on }: { on: boolean }) {
   return (

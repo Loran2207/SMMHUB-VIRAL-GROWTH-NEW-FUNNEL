@@ -16,13 +16,13 @@ export type Bullet = { title: string; sub: string };
 
 export type Question =
   | { kind: "continue"; label: string }
-  | { kind: "single"; options: Opt[]; custom?: boolean }
+  | { kind: "single"; options: Opt[]; custom?: boolean; customPlaceholder?: string }
   | { kind: "yesno" }
   | { kind: "multi"; options: Opt[]; custom?: boolean; cta?: string }
   /** Platform picker: brand-icon checkbox cards plus a free-text "Other" row. */
   | { kind: "platforms"; options: { label: string; icon: "instagram" | "youtube" | "tiktok" }[]; other?: boolean; cta?: string }
   | { kind: "text"; placeholder: string; cta?: string }
-  | { kind: "nicheList"; options: Opt[]; custom?: boolean }
+  | { kind: "nicheList"; options: Opt[]; custom?: boolean; customPlaceholder?: string }
   | { kind: "nicheGen" }
   | { kind: "age" }
   | { kind: "language" }
