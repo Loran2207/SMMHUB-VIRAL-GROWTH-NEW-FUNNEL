@@ -23,6 +23,18 @@ export function GrowthChart() {
           draggable={false}
           className="absolute bottom-0 left-1/2 block h-[300px] w-auto -translate-x-1/2 select-none"
         />
+        {/* White fade at the bottom so Sandy melts into the background. Inline SVG gradient, not a
+            CSS gradient (a CSS gradient captures back into Figma as a grey box). */}
+        <svg aria-hidden viewBox="0 0 402 96" preserveAspectRatio="none" className="pointer-events-none absolute inset-x-0 bottom-0 block h-[96px] w-full">
+          <defs>
+            <linearGradient id="pw-sandy-fade" x1="0" y1="0" x2="0" y2="96" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="#ffffff" stopOpacity="0" />
+              <stop offset="0.7" stopColor="#ffffff" stopOpacity="0.85" />
+              <stop offset="1" stopColor="#ffffff" stopOpacity="1" />
+            </linearGradient>
+          </defs>
+          <rect width="402" height="96" fill="url(#pw-sandy-fade)" />
+        </svg>
         {/* real brand icons in white circles */}
         <Bubble className="left-5 top-3 size-[48px]"><img src="/img/platform-instagram.svg" alt="" className="size-[26px]" /></Bubble>
         <Bubble className="right-5 top-3 size-[48px]"><img src="/img/platform-tiktok.svg" alt="" className="h-[26px] w-[23px]" /></Bubble>
